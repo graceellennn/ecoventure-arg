@@ -8,6 +8,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/main.css">
 <style>
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* ini bikin ke tengah */
+  gap: 8px;
+}
+
 body {
   background: linear-gradient(160deg, #0F3D2A 0%, #15803D 40%, #22C55E 100%);
   min-height: 100vh; font-family: 'Nunito', sans-serif;
@@ -327,10 +335,15 @@ body {
 </section>
 
 <footer>
-  <div class="footer-logo">🌿 <span>Eco</span>Venture</div>
+  <div class="footer-logo">
+  <a href="index.html" class="logo">
+    <img src="assets/logo.svg" alt="EcoVenture Logo" class="logo-icon">
+    <span>Eco</span>Venture
+    </a></div>
   <p>Kompetisi TECHSOFT 2026 · HIMA-RPL Politeknik Negeri Indramayu</p>
   <p style="margin-top:8px;opacity:.7">Explore. Learn. Be an Eco Hero.</p>
 </footer>
+
 
 <script>
 // ── Stars ──
