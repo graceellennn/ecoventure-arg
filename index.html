@@ -15,7 +15,7 @@
 /* ── Hero ── */
 .hero {
   min-height: 100vh;
-  background: url('/assets/land1.png') center/cover no-repeat;
+  background: url('assets/land1.png') center/cover no-repeat;
   position: relative;
   overflow: hidden;
 
@@ -217,6 +217,19 @@
 .section-sub { text-align: center; color: #6B7280; font-size: .95rem; margin-bottom: 40px; }
 .reveal { opacity:0; transform:translateY(30px); transition:.6s ease; }
 .reveal.visible { opacity:1; transform:none; }
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* ini bikin ke tengah */
+  gap: 8px;
+}
+
+.logo-icon {
+  width: 32px; /* atur sesuai kebutuhan */
+  height: 32px;
+  object-fit: contain;
+}
 </style>
 </head>
 <body>
@@ -286,10 +299,6 @@
   </div>
 </div>
 
-<!-- ══════ MAP ══════ -->
-<div class="map-scene">
-  <div id="root"></div>
-</div>
 
 <!-- ══════ LEVELS GRID ══════ -->
 <section id="levels-section" class="section section-bg-white">
@@ -337,7 +346,11 @@
 </div>
 
 <footer>
-  <div class="footer-logo"> <span>Eco</span>Venture</div>
+  <div class="footer-logo">
+  <a href="index.html" class="logo">
+    <img src="assets/logo.svg" alt="EcoVenture Logo" class="logo-icon">
+    <span>Eco</span>Venture
+    </a></div>
   <p>Kompetisi TECHSOFT 2026 · HIMA-RPL Politeknik Negeri Indramayu</p>
   <p style="margin-top:8px;opacity:.7">Explore. Learn. Be an Eco Hero.</p>
 </footer>
@@ -420,7 +433,7 @@ introNext.addEventListener('click',()=>{
   if(si<stories.length-1){si++;renderStory();}
   else{
     introModal.classList.remove('open');
-    document.getElementById('map-section').scrollIntoView({behavior:'smooth'});
+    document.getElementById('levels-section').scrollIntoView({behavior:'smooth'});
     showNotif('🌿 Selamat datang, Eco Explorer!');
     showXPToast(5,'Intro selesai');
     EcoState.addXP(5); updateNavXP();
