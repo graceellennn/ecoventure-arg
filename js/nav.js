@@ -13,7 +13,6 @@
     </a>
 <div class="nav-links" id="nav-links">
       <a href="index.html"   class="${currentPage==='index.html'  ?'active':''}">Home</a>
-      <a href="index.html#map-section" >Map</a>
       <a href="index.html#levels-section">Levels</a>
       <a href="about.html"  class="${currentPage==='about.html'  ?'active':''}">About</a>
       <a href="contact.html" class="${currentPage==='contact.html'?'active':''}">Contact</a>
