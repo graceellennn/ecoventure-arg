@@ -6,14 +6,43 @@
 <title>About — EcoVenture</title>
 <style>
 /* HERO */
-.hero-card {
-  background: linear-gradient(135deg, #16a34a, #22c55e);
+
+.btn-primary {
+  background: linear-gradient(135deg,  rgba(21,128,61,.8), #22c55e); /* hijau eco */
   color: white;
-  padding: 60px 20px;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 15px rgba(34, 197, 94, 0.3);
+}
+
+/* hover effect */
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(34, 197, 94, 0.45);
+  background: linear-gradient(135deg, #20934a, #16a34a);
+}
+
+/* klik effect */
+.btn-primary:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3);
+}
+
+
+.hero-card {
+  background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(21,128,61,0.08));
+  color: rgb(0, 0, 0);
+  padding: 70px 30px;
   text-align: center;
-  border-radius: 20px;
-  margin: 40px auto;
+  border-radius: 24px;
+  margin: 50px auto;
   max-width: 900px;
+  position: relative;
+  overflow: hidden;
 }
 
 .hero-card h1 {
@@ -81,6 +110,18 @@
   font-size: 1.3rem;
   font-weight: 700;
   margin-bottom: 20px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* ini bikin ke tengah */
+  gap: 8px;
+}
+
+.logo-icon {
+  width: 32px; /* atur sesuai kebutuhan */
+  height: 32px;
+  object-fit: contain;
 }
 
 </style>
@@ -153,8 +194,13 @@
 
 </main>
 <footer>
-  <div class="footer-logo">🌿 <span>Eco</span>Venture</div>
+  <div class="footer-logo">
+  <a href="index.html" class="logo">
+    <img src="assets/logo.svg" alt="EcoVenture Logo" class="logo-icon">
+    <span>Eco</span>Venture
+    </a></div>
   <p>Kompetisi TECHSOFT 2026 · HIMA-RPL Politeknik Negeri Indramayu</p>
+  <p style="margin-top:8px;opacity:.7">Explore. Learn. Be an Eco Hero.</p>
 </footer>
 <script src="js/state.js"></script>
 <script>updateNavXP()</script>
