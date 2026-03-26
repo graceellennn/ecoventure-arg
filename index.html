@@ -15,7 +15,7 @@
 /* ── Hero ── */
 .hero {
   min-height: 100vh;
-  background: url('assets/land1.png') center/cover no-repeat;
+  background: url('/assets/land1.png') center/cover no-repeat;
   position: relative;
   overflow: hidden;
 
@@ -287,110 +287,9 @@
 </div>
 
 <!-- ══════ MAP ══════ -->
-<section id="map-section" style="background:#F0FDF4;padding:60px 0 40px">
-  <div style="text-align:center;padding:0 20px 30px">
-    <h2 class="section-title reveal">🗺️ Peta Petualanganmu</h2>
-    <p class="section-sub reveal">Zoom &amp; geser peta · Klik node level untuk memulai</p>
-  </div>
-
-  <div class="map-container" id="map-wrapper" style="cursor:grab">
-    <div class="map-scene" id="map-scene">
-
-      <svg viewBox="0 0 1100 520" xmlns="http://www.w3.org/2000/svg"
-           style="position:absolute;width:100%;height:100%;top:0;left:0">
-        <defs>
-          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="#38BDF8"/>
-            <stop offset="100%" stop-color="#7DD3FC"/>
-          </linearGradient>
-        </defs>
-        <rect width="1100" height="520" fill="url(#skyGrad)"/>
-        <!-- Sun -->
-        <circle cx="950" cy="70" r="45" fill="#FFEE58" opacity=".9"/>
-        <circle cx="950" cy="70" r="35" fill="#FFF176"/>
-        <!-- Mountains -->
-        <polygon points="0,400 120,180 240,400"    fill="#0a2a1c" opacity=".8"/>
-        <polygon points="180,400 340,140 500,400"  fill="#14532d" opacity=".7"/>
-        <polygon points="420,400 600,100 760,400"  fill="#0a2a1c" opacity=".9"/>
-        <polygon points="680,400 860,160 1020,400" fill="#14532d" opacity=".7"/>
-        <polygon points="900,400 1060,200 1100,400" fill="#0a2a1c" opacity=".8"/>
-        <!-- Ground -->
-        <polygon points="0,380 200,340 400,360 600,325 800,345 1000,328 1100,340 1100,520 0,520" fill="#166534"/>
-        <polygon points="0,400 250,368 500,380 750,360 1000,372 1100,365 1100,520 0,520" fill="#15803D"/>
-        <polygon points="0,430 300,415 600,420 900,408 1100,416 1100,520 0,520" fill="#22C55E"/>
-        <!-- Trees -->
-        <g fill="#052e16">
-          <polygon points="80,380  90,350  100,380"/><polygon points="75,388  90,368 105,388" fill="#14532d"/>
-          <polygon points="160,375 172,342 184,375"/><polygon points="155,384 172,360 189,384" fill="#14532d"/>
-          <polygon points="430,362 443,330 456,362"/><polygon points="425,370 443,348 461,370" fill="#14532d"/>
-          <polygon points="560,355 573,322 586,355"/><polygon points="555,364 573,340 591,364" fill="#14532d"/>
-          <polygon points="720,358 733,325 746,358"/><polygon points="715,367 733,343 751,367" fill="#14532d"/>
-          <polygon points="1010,342 1023,308 1036,342"/><polygon points="1005,351 1023,327 1041,351" fill="#14532d"/>
-        </g>
-        <!-- Clouds -->
-        <g opacity=".85">
-          <ellipse cx="140" cy="100" rx="70" ry="22" fill="white"/>
-          <ellipse cx="110" cy="88"  rx="42" ry="26" fill="white"/>
-          <ellipse cx="168" cy="92"  rx="36" ry="20" fill="white"/>
-        </g>
-        <g opacity=".8">
-          <ellipse cx="600" cy="80" rx="60" ry="18" fill="white"/>
-          <ellipse cx="574" cy="68" rx="36" ry="22" fill="white"/>
-          <ellipse cx="628" cy="70" rx="30" ry="16" fill="white"/>
-        </g>
-        <!-- Islands -->
-        <ellipse cx="175" cy="440" rx="68" ry="22" fill="#166534"/>
-        <ellipse cx="175" cy="435" rx="62" ry="18" fill="#22C55E"/>
-        <ellipse cx="350" cy="380" rx="60" ry="20" fill="#166534"/>
-        <ellipse cx="350" cy="375" rx="54" ry="16" fill="#22C55E"/>
-        <ellipse cx="490" cy="220" rx="65" ry="20" fill="#166534"/>
-        <ellipse cx="490" cy="215" rx="58" ry="16" fill="#22C55E"/>
-        <ellipse cx="700" cy="230" rx="60" ry="19" fill="#166534"/>
-        <ellipse cx="700" cy="225" rx="54" ry="15" fill="#22C55E"/>
-        <ellipse cx="860" cy="340" rx="62" ry="20" fill="#166534"/>
-        <ellipse cx="860" cy="335" rx="56" ry="16" fill="#22C55E"/>
-        <!-- Summit -->
-        <polygon points="550,100 600,65 650,100 630,115 570,115" fill="#0a2a1c"/>
-        <polygon points="560,100 600,70 640,100 625,112 575,112" fill="#14532d"/>
-        <!-- Paths -->
-        <polyline points="190,420 380,290 550,175 720,290 910,420"
-          fill="none" stroke="rgba(255,255,255,.6)" stroke-width="4"
-          stroke-dasharray="10,7" stroke-linecap="round"/>
-        <polyline points="550,175 600,82"
-          fill="none" stroke="rgba(255,238,88,.85)" stroke-width="4"
-          stroke-dasharray="10,7" stroke-linecap="round"/>
-      </svg>
-
-      <!-- Level Nodes -->
-      <div class="level-node" data-level="1" style="left:17.3%;top:84.6%">
-        <button class="node-btn">1</button>
-        <span class="node-label">Waste Basics</span>
-      </div>
-      <div class="level-node" data-level="2" style="left:34.5%;top:57%">
-        <button class="node-btn">2</button>
-        <span class="node-label">Jenis Sampah</span>
-      </div>
-      <div class="level-node" data-level="3" style="left:65.5%;top:57%">
-        <button class="node-btn">3</button>
-        <span class="node-label">Waste Sorting</span>
-      </div>
-      <div class="level-node" data-level="4" style="left:82.7%;top:84.6%">
-        <button class="node-btn">4</button>
-        <span class="node-label">3R &amp; Action</span>
-      </div>
-      <div class="level-node" data-level="hero" style="left:54.5%;top:13%">
-        <button class="node-btn" style="background:linear-gradient(135deg,#FFD700,#FF8C00);width:60px;height:60px;font-size:1.5rem">🏆</button>
-        <span class="node-label" style="background:rgba(120,60,0,.85)">Eco Hero</span>
-      </div>
-    </div>
-    <div class="map-hint">🖱 Scroll=Zoom · Drag=Pan</div>
-    <button id="map-reset-zoom"
-      style="position:absolute;top:12px;left:12px;z-index:50;background:rgba(0,0,0,.45);
-             color:#fff;border:none;border-radius:8px;padding:6px 12px;
-             font-family:'Nunito',sans-serif;font-size:12px;cursor:pointer">↺ Reset</button>
-  </div>
-</section>
-
+<div class="map-scene">
+  <div id="root"></div>
+</div>
 
 <!-- ══════ LEVELS GRID ══════ -->
 <section id="levels-section" class="section section-bg-white">
