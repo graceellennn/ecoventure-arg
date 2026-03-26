@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Level 3 – Waste Sorting | EcoVenture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<style>
+body { background: #F0FDF4; font-family: 'Nunito', sans-serif; }
+
+/* ── Hero ── */
+.lv-hero {
+  background: url("assets/land4.png") center/cover no-repeat;
+  color: #fbfbfb;
+  padding: 55px 20px 45px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 150px;
+
+  min-height: 70vh; 
+  
+}
+
+.lv-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+   z-index: 0;
+  background: rgba(0, 0, 0, 0.45); /* overlay gelap */
+}
+
+.lv-hero * {
+  position: relative;
+  z-index: 1;
+}
+.lv-badge {
+  display: inline-block; background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.3); border-radius: 50px;
+  padding: 5px 18px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 14px;
+}
+.lv-title { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 900; margin: 0 0 8px; }
+.lv-subtitle { font-size: .95rem; opacity: .85; }
+.xp-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(252,211,77,.2); border: 1.5px solid rgba(252,211,77,.45);
+  border-radius: 50px; padding: 5px 16px; font-size: 13px; font-weight: 800;
+  color: #FEF08A; margin-top: 16px;
+}
+
+/* ── Material Section ── */
+.lv-section { max-width: 880px; margin: 0 auto; padding: 32px 24px; }
+.section-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: 8px; padding: 4px 14px; font-size: 11px; font-weight: 800;
+  letter-spacing: .5px; margin-bottom: 12px; text-transform: uppercase;
+}
+.section-heading { font-size: clamp(1.2rem, 3vw, 1.55rem); font-weight: 900; color: #0F3D2A; margin: 0 0 10px; }
+.section-body { color: #374151; font-size: .93rem; line-height: 1.8; margin-bottom: 16px; }
+.rule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 16px; }
+.rule-card { border-radius: 16px; padding: 20px 16px; border: 2.5px solid; }
+.rc-icon { font-size: 2.2rem; margin-bottom: 8px; display: block; }
+.rc-title { font-weight: 900; font-size: .95rem; margin-bottom: 8px; }
+.rc-list { font-size: .82rem; color: #374151; line-height: 1.9; padding-left: 16px; list-style: disc; }
+
+/* ── Game Wrap ── */
+.game-wrap { max-width: 900px; margin: 0 auto; padding: 0 20px 36px; }
+
+/* ── Game Header Stats ── */
+.game-header {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #fff; border-radius: 18px; padding: 16px 22px;
+  box-shadow: 0 4px 18px rgba(0,0,0,.09); margin-bottom: 22px; flex-wrap: wrap; gap: 12px;
+}
+.game-stat { text-align: center; min-width: 52px; }
+.gs-val { font-size: 1.7rem; font-weight: 900; line-height: 1; margin-bottom: 2px; }
+.gs-lbl { font-size: .68rem; color: #9CA3AF; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+.timer-wrap { flex: 1; padding: 0 12px; min-width: 120px; }
+.timer-label { font-size: .72rem; color: #6B7280; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.timer-bar { height: 12px; background: #E5E7EB; border-radius: 99px; overflow: hidden; }
+.timer-fill { height: 100%; background: linear-gradient(90deg, #22C55E, #4ADE80); border-radius: 99px; transition: width .3s linear; }
+.btn-start {
+  background: linear-gradient(135deg, #22C55E, #15803D);
+  color: #fff; border: none; border-radius: 50px; padding: 12px 26px;
+  font-size: .9rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif;
+  transition: .2s; white-space: nowrap; box-shadow: 0 4px 14px rgba(34,197,94,.35);
+}
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(34,197,94,.45); }
+
+/* ── Items Area ── */
+.items-area {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  background: #fff; border-radius: 18px; padding: 22px;
+  min-height: 110px; box-shadow: 0 3px 14px rgba(0,0,0,.07);
+  margin-bottom: 22px; transition: .2s;
+  border: 2px dashed #E5E7EB;
+}
+.items-area:empty::before {
+  content: '▶ Tekan Mulai untuk memulai game!';
+  color: #9CA3AF; font-size: .9rem; font-style: italic; padding: 20px;
+  display: flex; align-items: center;
+}
+.items-area.active { border-color: #86EFAC; background: #F0FDF4; }
+
+/* ── Item Chips ── */
+.item-chip {
+  background: #fff; border: 2.5px solid #E5E7EB; border-radius: 14px;
+  padding: 12px 16px; cursor: grab; transition: .2s;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 1.05rem; font-weight: 800; user-select: none; touch-action: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,.07);
+  font-family: 'Nunito', sans-serif;
+}
+.item-chip span { font-size: 1.3rem; }
+.item-chip:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 6px 16px rgba(0,0,0,.12); border-color: #86EFAC; }
+.item-chip.dragging { opacity: .3; transform: scale(.95); cursor: grabbing; }
+.item-chip.ghost { position: fixed; z-index: 1000; opacity: .85; pointer-events: none; transform: scale(1.06); }
+
+/* ── Bins ── */
+.bins-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+@media(max-width: 560px) { .bins-row { grid-template-columns: 1fr; } }
+.bin {
+  border-radius: 20px; padding: 20px 14px; min-height: 150px;
+  border: 3px dashed; text-align: center; transition: .25s;
+  display: flex; flex-direction: column; align-items: center;
+  position: relative; overflow: hidden;
+}
+.bin::before {
+  content: ''; position: absolute; inset: 0; border-radius: 18px;
+  background: linear-gradient(135deg, currentColor, transparent);
+  opacity: 0; transition: .3s;
+}
+.bin.dragover { transform: scale(1.04); box-shadow: 0 8px 28px rgba(0,0,0,.14); }
+.bin.dragover::before { opacity: .06; }
+.bin-icon { font-size: 2.6rem; margin-bottom: 6px; display: block; transition: .2s; }
+.bin.dragover .bin-icon { transform: scale(1.15); }
+.bin-name { font-weight: 900; font-size: .9rem; margin-bottom: 12px; }
+.bin-items { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-top: auto; }
+.bi-chip {
+  border-radius: 8px; padding: 3px 8px; font-size: .72rem; font-weight: 700;
+  backdrop-filter: blur(4px);
+}
+
+/* ── Feedback Toast ── */
+.feedback-toast {
+  position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-16px);
+  padding: 12px 28px; border-radius: 50px; font-weight: 900; font-size: 1rem; color: #fff;
+  z-index: 200; pointer-events: none; opacity: 0; transition: .3s;
+  font-family: 'Nunito', sans-serif; box-shadow: 0 6px 20px rgba(0,0,0,.2);
+  white-space: nowrap;
+}
+.feedback-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── Result Modal ── */
+.result-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 300;
+  display: none; align-items: center; justify-content: center; padding: 20px;
+  backdrop-filter: blur(6px);
+}
+.result-modal.show { display: flex; }
+.result-box {
+  background: #fff; border-radius: 28px; padding: 40px 32px; text-align: center;
+  max-width: 460px; width: 100%; box-shadow: 0 24px 64px rgba(0,0,0,.28);
+  animation: slideUp .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes slideUp {
+  from { transform: translateY(30px) scale(.95); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+.res-emoji { font-size: 4.5rem; margin-bottom: 12px; display: block; animation: bounce-in .5s .2s both; }
+@keyframes bounce-in { 0%{transform:scale(0)}80%{transform:scale(1.15)}100%{transform:scale(1)} }
+.res-title { font-size: 1.8rem; font-weight: 900; color: #0F3D2A; margin-bottom: 8px; }
+.res-score {
+  font-size: 2.8rem; font-weight: 900; color: #22C55E; margin: 14px 0;
+  font-family: 'Nunito', sans-serif;
+}
+.res-stats {
+  display: flex; gap: 12px; justify-content: center; margin: 0 0 20px; flex-wrap: wrap;
+}
+.res-stat {
+  background: #F3F4F6; border-radius: 12px; padding: 10px 18px; text-align: center;
+}
+.res-stat-val { font-size: 1.4rem; font-weight: 900; }
+.res-stat-lbl { font-size: .72rem; color: #9CA3AF; font-weight: 700; text-transform: uppercase; }
+.res-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.btn-res {
+  border: none; border-radius: 50px; padding: 13px 28px; font-size: .9rem;
+  font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; transition: .2s;
+}
+.btn-retry { background: #F0FDF4; color: #15803D; border: 2px solid #86EFAC; }
+.btn-retry:hover { background: #DCFCE7; }
+.btn-next-res { background: linear-gradient(135deg, #22C55E, #15803D); color: #fff; box-shadow: 0 4px 14px rgba(34,197,94,.35); }
+.btn-next-res:hover { transform: translateY(-2px); }
+
+/* ── Accuracy Ring ── */
+.accuracy-ring-wrap { position: relative; width: 90px; height: 90px; margin: 0 auto 16px; }
+.accuracy-ring-bg { fill: none; stroke: #E5E7EB; stroke-width: 8; }
+.accuracy-ring-fill { fill: none; stroke-width: 8; stroke-linecap: round; transition: 1s ease; transform: rotate(-90deg); transform-origin: 50% 50%; }
+.accuracy-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 900; }
+
+/* ── Complete ── */
+.lv-complete { max-width: 880px; margin: 0 auto; padding: 16px 24px 52px; text-align: center; }
+.hint-text { font-size: .88rem; color: #9CA3AF; margin-bottom: 18px; }
+.btn-complete {
+  background: linear-gradient(135deg, #22C55E, #15803D);
+  color: #fff; border: none; border-radius: 50px; padding: 16px 44px;
+  font-size: 1rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif;
+  transition: .2s; box-shadow: 0 6px 20px rgba(34,197,94,.35);
+}
+.btn-complete:hover:not(:disabled) { transform: translateY(-3px); }
+.btn-complete:disabled { background: #D1D5DB; cursor: not-allowed; box-shadow: none; color: #9CA3AF; }
+.nav-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 880px; margin: 0 auto; padding: 0 24px 32px;
+}
+.btn-nav {
+  background: #fff; border: 2px solid #22C55E; color: #15803D;
+  border-radius: 50px; padding: 10px 26px; font-size: .9rem; font-weight: 700;
+  cursor: pointer; text-decoration: none; font-family: 'Nunito', sans-serif; transition: .2s;
+}
+.btn-nav:hover { background: #22C55E; color: #fff; }
+.btn-nav.next { background: #22C55E; color: #fff; border-color: #22C55E; }
+.btn-nav.next:hover { background: #15803D; }
+
+/* ── Confetti ── */
+.confetti { position: fixed; pointer-events: none; z-index: 999; }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- Hero -->
+<div class="lv-hero">
+  <div class="lv-badge"> LEVEL 3 — WASTE SORTING</div>
+  <div class="lv-title"> Latihan Memilah Sampah</div>
+  <div class="lv-subtitle">Mini Game: Drag & Drop — Pisahkan sampah ke tempat yang benar!</div>
+  <div class="xp-pill">⚡ +75 XP saat selesai</div>
+</div>
+
+<!-- Material Brief -->
+<div class="lv-section">
+  <div class="section-label" style="background:#DCFCE7;color:#15803D">📖 PANDUAN PEMILAHAN</div>
+  <h2 class="section-heading">3 Kategori Utama — Kenali Sebelum Bermain!</h2>
+  <p class="section-body">
+    Pemilahan sampah adalah <strong>langkah paling penting</strong> dalam pengelolaan limbah.
+    Tanpa pemilahan yang benar, semua upaya daur ulang menjadi sia-sia.
+    Kenali 3 kategori ini baik-baik, lalu buktikan kemampuanmu di game!
+  </p>
+  <div class="rule-grid">
+    <div class="rule-card" style="background:#F0FDF4;border-color:#22C55E">
+      <span class="rc-icon">🌿</span>
+      <div class="rc-title" style="color:#15803D">🟢 Organik</div>
+      <ul class="rc-list">
+        <li>Sisa makanan & sayuran</li>
+        <li>Kulit buah & biji</li>
+        <li>Daun & ranting kering</li>
+        <li>Kertas kotor/basah</li>
+      </ul>
+    </div>
+    <div class="rule-card" style="background:#EFF6FF;border-color:#3B82F6">
+      <span class="rc-icon">🔵</span>
+      <div class="rc-title" style="color:#1D4ED8">🔵 Anorganik</div>
+      <ul class="rc-list">
+        <li>Plastik bersih (botol, kemasan)</li>
+        <li>Kertas & kardus bersih</li>
+        <li>Kaca & logam</li>
+        <li>Kaleng & aluminium</li>
+      </ul>
+    </div>
+    <div class="rule-card" style="background:#FFF1F2;border-color:#EF4444">
+      <span class="rc-icon">⚠️</span>
+      <div class="rc-title" style="color:#DC2626">🔴 B3 / Berbahaya</div>
+      <ul class="rc-list">
+        <li>Baterai & elektronik rusak</li>
+        <li>Obat kedaluwarsa</li>
+        <li>Cat, pestisida, bahan kimia</li>
+        <li>Lampu neon/CFL</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- GAME -->
+<div class="game-wrap">
+  <div class="game-header">
+    <div class="game-stat">
+      <div class="gs-val" id="score-val" style="color:#22C55E">0</div>
+      <div class="gs-lbl">Skor</div>
+    </div>
+    <div class="timer-wrap">
+      <div class="timer-label">⏱ Waktu</div>
+      <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
+      <div style="font-size:.72rem;color:#9CA3AF;margin-top:3px;font-weight:700" id="timer-text">60 detik</div>
+    </div>
+    <div class="game-stat">
+      <div class="gs-val" id="correct-val" style="color:#22C55E">0</div>
+      <div class="gs-lbl">✅ Benar</div>
+    </div>
+    <div class="game-stat">
+      <div class="gs-val" id="wrong-val" style="color:#EF4444">0</div>
+      <div class="gs-lbl">❌ Salah</div>
+    </div>
+    <button class="btn-start" id="btn-start" onclick="startGame()">▶ Mulai Game</button>
+  </div>
+
+  <!-- Items -->
+  <div class="items-area" id="items-area"></div>
+
+  <!-- Bins -->
+  <div class="bins-row">
+    <div class="bin" style="background:#F0FDF4;border-color:#22C55E;color:#22C55E"
+      id="bin-organic" data-bin="organic"
+      ondrop="onDrop(event,'organic')" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)">
+      <span class="bin-icon">🌿</span>
+      <div class="bin-name" style="color:#15803D">ORGANIK</div>
+      <div class="bin-items" id="dropped-organic"></div>
+    </div>
+    <div class="bin" style="background:#EFF6FF;border-color:#3B82F6;color:#3B82F6"
+      id="bin-anorganic" data-bin="anorganic"
+      ondrop="onDrop(event,'anorganic')" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)">
+      <span class="bin-icon">🔵</span>
+      <div class="bin-name" style="color:#1D4ED8">ANORGANIK</div>
+      <div class="bin-items" id="dropped-anorganic"></div>
+    </div>
+    <div class="bin" style="background:#FFF1F2;border-color:#EF4444;color:#EF4444"
+      id="bin-b3" data-bin="b3"
+      ondrop="onDrop(event,'b3')" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)">
+      <span class="bin-icon">⚠️</span>
+      <div class="bin-name" style="color:#DC2626">B3 / BERBAHAYA</div>
+      <div class="bin-items" id="dropped-b3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Feedback Toast -->
+<div class="feedback-toast" id="feedback-toast"></div>
+
+<!-- Result Modal -->
+<div class="result-modal" id="result-modal">
+  <div class="result-box">
+    <span class="res-emoji" id="res-emoji">🎉</span>
+    <div class="res-title" id="res-title">Luar Biasa!</div>
+    <div class="res-score" id="res-score">+0 XP</div>
+    <div class="res-stats">
+      <div class="res-stat">
+        <div class="res-stat-val" id="rs-correct" style="color:#22C55E">0</div>
+        <div class="res-stat-lbl">✅ Benar</div>
+      </div>
+      <div class="res-stat">
+        <div class="res-stat-val" id="rs-wrong" style="color:#EF4444">0</div>
+        <div class="res-stat-lbl">❌ Salah</div>
+      </div>
+      <div class="res-stat">
+        <div class="res-stat-val" id="rs-accuracy" style="color:#F59E0B">0%</div>
+        <div class="res-stat-lbl">Akurasi</div>
+      </div>
+    </div>
+    <div class="res-btns">
+      <button class="btn-res btn-retry" onclick="retryGame()">🔄 Main Lagi</button>
+      <button class="btn-res btn-next-res" id="btn-next-res" onclick="goToComplete()" style="display:none">Level 4 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Complete -->
+<div class="lv-complete">
+  <p class="hint-text" id="hint-txt">Mainkan game dan capai akurasi ≥50% untuk melanjutkan</p>
+  <button class="btn-complete" id="btn-done" disabled onclick="doComplete()">✅ Selesaikan Level 3</button>
+</div>
+<div class="nav-footer">
+  <a href="level2.html" class="btn-nav">← Level 2</a>
+  <a href="level4.html" class="btn-nav next" id="btn-next" style="display:none">Level 4 →</a>
+</div>
+
+<script src="js/state.js"></script>
+<script src="js/nav.js"></script>
+<script>
+// ─── All items ───
+const ALL_ITEMS = [
+  // Organic
+  { id:'o1',  emoji:'🍌', label:'Kulit Pisang',     bin:'organic' },
+  { id:'o2',  emoji:'🥑', label:'Kulit Alpukat',    bin:'organic' },
+  { id:'o3',  emoji:'🍚', label:'Nasi Sisa',         bin:'organic' },
+  { id:'o4',  emoji:'🥦', label:'Sayuran Sisa',      bin:'organic' },
+  { id:'o5',  emoji:'🍂', label:'Daun Kering',       bin:'organic' },
+  { id:'o6',  emoji:'☕', label:'Ampas Kopi',        bin:'organic' },
+  // Anorganic
+  { id:'a1',  emoji:'🧴', label:'Botol Plastik',     bin:'anorganic' },
+  { id:'a2',  emoji:'📰', label:'Koran Bekas',        bin:'anorganic' },
+  { id:'a3',  emoji:'🥫', label:'Kaleng Soda',       bin:'anorganic' },
+  { id:'a4',  emoji:'📦', label:'Kardus',             bin:'anorganic' },
+  { id:'a5',  emoji:'🍾', label:'Botol Kaca',         bin:'anorganic' },
+  { id:'a6',  emoji:'🥤', label:'Gelas Plastik',     bin:'anorganic' },
+  // B3
+  { id:'b1',  emoji:'🔋', label:'Baterai AA',         bin:'b3' },
+  { id:'b2',  emoji:'📱', label:'HP Rusak',           bin:'b3' },
+  { id:'b3',  emoji:'💊', label:'Obat Kadaluarsa',   bin:'b3' },
+  { id:'b4',  emoji:'💡', label:'Lampu Neon',         bin:'b3' },
+  { id:'b5',  emoji:'🧴', label:'Pestisida',          bin:'b3' },
+  { id:'b6',  emoji:'🪣', label:'Cat Sisa',           bin:'b3' },
+];
+
+const GAME_TIME = 60;
+let items = [], score = 0, correct = 0, wrong = 0;
+let timer = null, timeLeft = GAME_TIME, gameActive = false;
+let dragItem = null, dragEl = null;
+let ghostEl = null;
+let gameCompleted = false;
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - .5); }
+
+function startGame() {
+  clearInterval(timer);
+  score = 0; correct = 0; wrong = 0; timeLeft = GAME_TIME; gameActive = true;
+  document.getElementById('score-val').textContent = '0';
+  document.getElementById('correct-val').textContent = '0';
+  document.getElementById('wrong-val').textContent = '0';
+  ['organic', 'anorganic', 'b3'].forEach(b => document.getElementById('dropped-' + b).innerHTML = '');
+  document.getElementById('result-modal').classList.remove('show');
+  document.getElementById('btn-start').textContent = '🔄 Restart';
+
+  // Pick 3 items from each category
+  const org = shuffle(ALL_ITEMS.filter(i => i.bin === 'organic')).slice(0, 3);
+  const ano = shuffle(ALL_ITEMS.filter(i => i.bin === 'anorganic')).slice(0, 3);
+  const b3s = shuffle(ALL_ITEMS.filter(i => i.bin === 'b3')).slice(0, 3);
+  items = shuffle([...org, ...ano, ...b3s]);
+
+  const area = document.getElementById('items-area');
+  area.innerHTML = '';
+  area.classList.add('active');
+  items.forEach(item => {
+    const chip = document.createElement('div');
+    chip.className = 'item-chip';
+    chip.id = 'chip-' + item.id;
+    chip.dataset.id = item.id;
+    chip.dataset.bin = item.bin;
+    chip.draggable = true;
+    chip.innerHTML = `<span>${item.emoji}</span>${item.label}`;
+    chip.addEventListener('dragstart', e => { dragItem = item; dragEl = chip; chip.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
+    chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+    chip.addEventListener('touchstart', onTouchStart, { passive: false });
+    area.appendChild(chip);
+  });
+
+  updateTimer();
+  timer = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+}
+
+function updateTimer() {
+  const pct = timeLeft / GAME_TIME * 100;
+  const fill = document.getElementById('timer-fill');
+  fill.style.width = pct + '%';
+  fill.style.background = timeLeft > 20
+    ? 'linear-gradient(90deg,#22C55E,#4ADE80)'
+    : timeLeft > 10
+      ? 'linear-gradient(90deg,#F59E0B,#FBBF24)'
+      : 'linear-gradient(90deg,#EF4444,#F87171)';
+  document.getElementById('timer-text').textContent = timeLeft + ' detik';
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('dragover');
+}
+function onDragLeave(e) {
+  e.currentTarget.classList.remove('dragover');
+}
+
+function onDrop(e, binId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('dragover');
+  if (!gameActive || !dragItem) return;
+  processSort(dragItem, binId, dragEl);
+  dragItem = null; dragEl = null;
+}
+
+function processSort(item, binId, chipEl) {
+  if (!document.getElementById('chip-' + item.id)) return;
+  const isCorrect = item.bin === binId;
+  const xpChange = isCorrect ? 10 : -5;
+  score = Math.max(0, score + xpChange);
+  if (isCorrect) correct++; else wrong++;
+
+  document.getElementById('score-val').textContent = score;
+  document.getElementById('correct-val').textContent = correct;
+  document.getElementById('wrong-val').textContent = wrong;
+
+  EcoState.addXP(xpChange); updateNavXP();
+  showFeedback(isCorrect ? '✅ Benar! +10 XP' : '❌ Salah! -5 XP', isCorrect);
+
+  // Animate chip out
+  if (chipEl) {
+    chipEl.style.transform = isCorrect ? 'scale(1.1)' : 'scale(.9)';
+    chipEl.style.opacity = '0';
+    chipEl.style.transition = '.3s';
+    setTimeout(() => chipEl.remove(), 300);
+  }
+
+  // Add mini-chip to bin
+  setTimeout(() => {
+    const mini = document.createElement('div');
+    mini.className = 'bi-chip';
+    mini.textContent = item.emoji;
+    mini.style.background = isCorrect ? 'rgba(34,197,94,.15)' : 'rgba(239,68,68,.15)';
+    mini.style.border = `1.5px solid ${isCorrect ? 'rgba(34,197,94,.4)' : 'rgba(239,68,68,.4)'}`;
+    mini.style.color = isCorrect ? '#15803D' : '#DC2626';
+    mini.style.fontSize = '1rem';
+    document.getElementById('dropped-' + binId).appendChild(mini);
+  }, 280);
+
+  // Check all sorted
+  const remaining = document.getElementById('items-area').querySelectorAll('.item-chip').length;
+  if (remaining <= 1) setTimeout(endGame, 350);
+}
+
+function showFeedback(msg, ok) {
+  const el = document.getElementById('feedback-toast');
+  el.textContent = msg;
+  el.style.background = ok ? '#22C55E' : '#EF4444';
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 1600);
+}
+
+function endGame() {
+  clearInterval(timer);
+  gameActive = false;
+  document.getElementById('items-area').classList.remove('active');
+  const total = correct + wrong;
+  const accuracy = total > 0 ? Math.round(correct / total * 100) : 0;
+  const xp = Math.max(0, score);
+
+  document.getElementById('res-emoji').textContent = accuracy >= 80 ? '🎉' : accuracy >= 50 ? '👍' : '😅';
+  document.getElementById('res-title').textContent = accuracy >= 80 ? 'Luar Biasa! Kamu Expert!' : accuracy >= 50 ? 'Bagus! Terus Berlatih!' : 'Coba Lagi Yuk!';
+  document.getElementById('res-score').textContent = '+' + xp + ' XP';
+  document.getElementById('rs-correct').textContent = correct;
+  document.getElementById('rs-wrong').textContent = wrong;
+  document.getElementById('rs-accuracy').textContent = accuracy + '%';
+  document.getElementById('result-modal').classList.add('show');
+
+  if (accuracy >= 50) {
+    gameCompleted = true;
+    document.getElementById('btn-done').disabled = false;
+    document.getElementById('btn-next-res').style.display = 'inline-block';
+    document.getElementById('hint-txt').textContent = '🎉 Game selesai! Kamu bisa melanjutkan.';
+    if (accuracy >= 80) spawnConfetti();
+  }
+  EcoState.setLevelProgress(3, Math.min(100, accuracy));
+}
+
+function retryGame() {
+  document.getElementById('result-modal').classList.remove('show');
+  startGame();
+}
+
+function goToComplete() {
+  document.getElementById('result-modal').classList.remove('show');
+  document.getElementById('btn-done').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function doComplete() {
+  EcoState.completeLevel(3); updateNavXP();
+  showNotif('♻️ Level 3 selesai! +75 XP · Badge ♻️ didapat!');
+  document.getElementById('btn-done').textContent = '✅ Level 3 Selesai!';
+  document.getElementById('btn-done').disabled = true;
+  document.getElementById('btn-next').style.display = 'inline-block';
+}
+
+// ─── Touch Drag ───
+let touchChip = null, touchClone = null, touchItem = null;
+
+function onTouchStart(e) {
+  if (!gameActive) return;
+  e.preventDefault();
+  touchChip = e.currentTarget;
+  touchItem = ALL_ITEMS.find(i => i.id === touchChip.dataset.id);
+  const t = e.touches[0];
+  touchClone = touchChip.cloneNode(true);
+  touchClone.className += ' ghost';
+  touchClone.style.left = (t.clientX - 60) + 'px';
+  touchClone.style.top = (t.clientY - 25) + 'px';
+  touchClone.style.width = touchChip.offsetWidth + 'px';
+  document.body.appendChild(touchClone);
+  touchChip.classList.add('dragging');
+  document.addEventListener('touchmove', onTouchMove, { passive: false });
+  document.addEventListener('touchend', onTouchEnd);
+}
+
+function onTouchMove(e) {
+  e.preventDefault();
+  const t = e.touches[0];
+  if (touchClone) {
+    touchClone.style.left = (t.clientX - 60) + 'px';
+    touchClone.style.top = (t.clientY - 25) + 'px';
+  }
+  // Highlight bin
+  document.querySelectorAll('.bin').forEach(b => b.classList.remove('dragover'));
+  const under = document.elementFromPoint(t.clientX, t.clientY);
+  const bin = under?.closest('.bin');
+  if (bin) bin.classList.add('dragover');
+}
+
+function onTouchEnd(e) {
+  document.removeEventListener('touchmove', onTouchMove);
+  document.removeEventListener('touchend', onTouchEnd);
+  if (touchClone) { touchClone.remove(); touchClone = null; }
+  document.querySelectorAll('.bin').forEach(b => b.classList.remove('dragover'));
+  if (!touchChip || !gameActive || !touchItem) { touchChip = null; return; }
+  touchChip.classList.remove('dragging');
+  const t = e.changedTouches[0];
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  const bin = el?.closest('.bin');
+  if (bin) {
+    processSort(touchItem, bin.dataset.bin, touchChip);
+  }
+  touchChip = null; touchItem = null;
+}
+
+// ─── Confetti ───
+function spawnConfetti() {
+  const colors = ['#22C55E','#F59E0B','#3B82F6','#EF4444','#8B5CF6','#FCD34D'];
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.style.cssText = `position:fixed;width:8px;height:8px;border-radius:2px;z-index:999;
+      background:${colors[i%colors.length]};pointer-events:none;
+      left:${Math.random()*100}vw;top:-10px;
+      animation:confFall ${1.5+Math.random()*1.5}s ${Math.random()*.5}s linear forwards`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3000);
+  }
+  if (!document.getElementById('confStyle')) {
+    const s = document.createElement('style');
+    s.id = 'confStyle';
+    s.textContent = '@keyframes confFall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}';
+    document.head.appendChild(s);
+  }
+}
+
+// ─── Init ───
+const DONE = EcoState.getLevelState(3) === 'done';
+if (DONE) {
+  document.getElementById('btn-done').textContent = '✅ Sudah Selesai';
+  document.getElementById('btn-done').disabled = true;
+  document.getElementById('btn-next').style.display = 'inline-block';
+  document.getElementById('hint-txt').textContent = 'Level sudah selesai. Main lagi untuk latihan!';
+}
+updateNavXP();
+</script>
+</body>
+</html>

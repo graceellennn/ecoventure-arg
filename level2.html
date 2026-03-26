@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Level 2 – Jenis Sampah | EcoVenture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<style>
+body { background: #F0FDF4; font-family: 'Nunito', sans-serif; }
+
+/* ── Hero ── */
+
+.lv-hero {
+  background: url("assets/land3.png") center/cover no-repeat;
+  color: #fbfbfb;
+  padding: 55px 20px 45px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 150px;
+
+  min-height: 70vh; 
+  
+}
+
+.lv-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+   z-index: 0;
+  background: rgba(0, 0, 0, 0.45); /* overlay gelap */
+}
+
+.lv-hero * {
+  position: relative;
+  z-index: 1;
+}
+.lv-badge {
+  display: inline-block; background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.3); border-radius: 50px;
+  padding: 5px 18px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 14px;
+}
+.lv-title { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 900; margin: 0 0 8px; }
+.lv-subtitle { font-size: .95rem; opacity: .85; margin: 0; }
+.xp-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(252,211,77,.2); border: 1.5px solid rgba(252,211,77,.45);
+  border-radius: 50px; padding: 5px 16px; font-size: 13px; font-weight: 800;
+  color: #FEF08A; margin-top: 16px;
+}
+
+/* ── Sticky Progress ── */
+.lv-progress {
+  background: #fff; padding: 11px 24px; display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08); position: sticky; top: 60px; z-index: 40;
+  border-bottom: 2px solid #EFF6FF;
+}
+.lv-progress-bar { flex: 1; height: 9px; background: #E5E7EB; border-radius: 99px; overflow: hidden; }
+.lv-progress-fill {
+  height: 100%; background: linear-gradient(90deg, #0EA5E9, #38BDF8);
+  border-radius: 99px; transition: width .6s cubic-bezier(.4,0,.2,1); width: 0%;
+}
+.lv-progress-label { font-size: 12px; font-weight: 800; color: #1565C0; min-width: 44px; text-align: right; }
+
+/* ── Tabs Navigation ── */
+.tabs-nav {
+  display: flex; max-width: 880px; margin: 32px auto 0; padding: 0 24px; gap: 10px; flex-wrap: wrap;
+}
+.tab-btn {
+  flex: 1; min-width: 130px; padding: 14px 10px;
+  border: 2.5px solid #E5E7EB; background: #fff; border-radius: 14px;
+  font-family: 'Nunito', sans-serif; font-size: .88rem; font-weight: 800;
+  cursor: pointer; transition: .25s; color: #6B7280; text-align: center; line-height: 1.3;
+  position: relative;
+}
+.tab-btn .tab-check {
+  display: none; position: absolute; top: 8px; right: 8px;
+  background: #22C55E; color: #fff; font-size: 10px; font-weight: 900;
+  width: 18px; height: 18px; border-radius: 50%; align-items: center; justify-content: center;
+}
+.tab-btn.done .tab-check { display: flex; }
+.tab-btn:hover:not(.active) { border-color: #93C5FD; background: #EFF6FF; color: #374151; }
+.tab-btn[data-tab="organic"].active { background: linear-gradient(135deg, #16A34A, #15803D); color: #fff; border-color: transparent; }
+.tab-btn[data-tab="plastic"].active { background: linear-gradient(135deg, #1D4ED8, #1565C0); color: #fff; border-color: transparent; }
+.tab-btn[data-tab="b3"].active    { background: linear-gradient(135deg, #DC2626, #991B1B); color: #fff; border-color: transparent; }
+
+.tab-pane { display: none; max-width: 880px; margin: 0 auto; padding: 28px 24px; }
+.tab-pane.active { display: block; animation: fadeSlide .3s ease; }
+@keyframes fadeSlide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ── Section Labels ── */
+.section-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: 8px; padding: 4px 14px; font-size: 11px; font-weight: 800;
+  letter-spacing: .5px; margin-bottom: 12px; text-transform: uppercase;
+}
+.section-heading { font-size: clamp(1.2rem, 3vw, 1.55rem); font-weight: 900; margin: 0 0 12px; }
+.section-body { color: #374151; line-height: 1.8; font-size: .93rem; margin-bottom: 16px; }
+
+/* ── KOMPOS Simulator ── */
+.kompos-sim {
+  background: #fff; border-radius: 20px; padding: 26px 24px;
+  box-shadow: 0 3px 16px rgba(0,0,0,.08); margin-bottom: 20px;
+}
+.kompos-title { font-weight: 900; font-size: 1rem; color: #15803D; margin-bottom: 20px; }
+.kompos-stages { display: flex; gap: 8px; align-items: stretch; flex-wrap: wrap; }
+.kompos-stage {
+  flex: 1; min-width: 100px; border-radius: 14px; padding: 16px 10px; text-align: center;
+  border: 2.5px solid #E5E7EB; cursor: pointer; transition: .3s;
+  opacity: .4; transform: scale(.97);
+  background: #F9FAFB;
+}
+.kompos-stage.active {
+  opacity: 1; transform: scale(1.03);
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+}
+.kompos-stage:hover { opacity: .85; }
+.ks-icon { font-size: 2.2rem; margin-bottom: 8px; display: block; }
+.ks-label { font-size: .78rem; font-weight: 800; color: #374151; }
+.ks-week { font-size: .68rem; color: #9CA3AF; margin-top: 4px; }
+.kompos-progress-bar { height: 10px; background: #E5E7EB; border-radius: 99px; overflow: hidden; margin: 18px 0 14px; }
+.kompos-progress-fill { height: 100%; background: linear-gradient(90deg, #86EFAC, #22C55E, #15803D); border-radius: 99px; transition: width .6s ease; }
+.kompos-desc {
+  display: none; padding: 14px 18px; border-radius: 12px;
+  font-size: .88rem; color: #14532D; background: #DCFCE7;
+  line-height: 1.7; border-left: 4px solid #22C55E;
+}
+.kompos-desc.show { display: block; animation: fadeSlide .3s ease; }
+
+/* ── Plastic Actions ── */
+.action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 16px; }
+.action-btn {
+  border: 2.5px solid #BFDBFE; border-radius: 16px; padding: 18px 14px;
+  background: #fff; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif;
+  transition: .25s; position: relative;
+}
+.action-btn:hover:not(.selected) { background: #EFF6FF; border-color: #60A5FA; transform: translateY(-2px); }
+.action-btn.selected.good { background: linear-gradient(135deg, #F0FDF4, #DCFCE7); border-color: #22C55E; }
+.action-btn.selected.bad  { background: linear-gradient(135deg, #FFF1F2, #FFE4E6); border-color: #EF4444; }
+.ab-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+.ab-text { font-size: .88rem; font-weight: 700; color: #374151; line-height: 1.4; }
+.ab-result {
+  display: none; font-size: .78rem; margin-top: 10px; line-height: 1.5;
+  border-radius: 8px; padding: 8px 10px;
+}
+.action-btn.selected .ab-result { display: block; }
+.action-btn.selected.good .ab-result { color: #14532D; background: rgba(34,197,94,.1); }
+.action-btn.selected.bad  .ab-result { color: #991B1B; background: rgba(239,68,68,.1); }
+.plastic-facts {
+  background: #EFF6FF; border-radius: 14px; padding: 18px 20px; margin-bottom: 20px;
+  border-left: 4px solid #3B82F6;
+}
+.plastic-facts strong { color: #1D4ED8; }
+.plastic-facts ul { margin: 10px 0 0; padding-left: 18px; color: #374151; font-size: .88rem; line-height: 1.9; }
+
+/* ── B3 Grid ── */
+.b3-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-top: 16px; }
+.b3-item {
+  background: #fff; border-radius: 16px; padding: 22px 14px; text-align: center;
+  cursor: pointer; box-shadow: 0 3px 14px rgba(0,0,0,.07);
+  border: 2.5px solid transparent; transition: .25s;
+}
+.b3-item:hover { transform: translateY(-4px); box-shadow: 0 8px 22px rgba(0,0,0,.12); border-color: #FCA5A5; }
+.b3-item.clicked { border-color: #EF4444; background: #FFF1F2; }
+.b3-icon { font-size: 2.6rem; margin-bottom: 10px; display: block; transition: .25s; }
+.b3-item:hover .b3-icon { transform: scale(1.12); }
+.b3-name { font-size: .85rem; font-weight: 800; color: #374151; margin-bottom: 3px; }
+.b3-sub { font-size: .7rem; color: #9CA3AF; }
+
+/* ── B3 Modal ── */
+.b3-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 300;
+  display: none; align-items: center; justify-content: center; padding: 24px;
+  backdrop-filter: blur(4px);
+}
+.b3-modal.show { display: flex; }
+.b3-modal-box {
+  background: #fff; border-radius: 24px; padding: 32px; max-width: 440px; width: 100%;
+  position: relative; box-shadow: 0 24px 64px rgba(0,0,0,.28);
+  animation: pop-in .35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes pop-in {
+  from { transform: scale(.85) translateY(20px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+.b3-modal-close {
+  position: absolute; top: 14px; right: 16px; background: #F3F4F6;
+  border: none; border-radius: 50%; width: 32px; height: 32px;
+  font-size: 1rem; cursor: pointer; color: #6B7280; transition: .2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.b3-modal-close:hover { background: #E5E7EB; color: #374151; }
+.bm-icon { font-size: 3.5rem; margin-bottom: 10px; display: block; }
+.bm-name { font-weight: 900; font-size: 1.15rem; color: #991B1B; margin-bottom: 6px; }
+.bm-danger {
+  display: inline-block; background: #FFF1F2; color: #DC2626;
+  font-size: .72rem; font-weight: 800; padding: 3px 12px;
+  border-radius: 99px; margin-bottom: 14px; letter-spacing: .5px; text-transform: uppercase;
+  border: 1px solid #FECACA;
+}
+.bm-desc { font-size: .9rem; color: #374151; line-height: 1.7; }
+.bm-tip {
+  margin-top: 14px; padding: 12px 16px; background: #DCFCE7; border-radius: 10px;
+  font-size: .84rem; color: #14532D; font-weight: 700;
+  border-left: 3px solid #22C55E;
+}
+
+/* ── Part Done Button ── */
+.btn-part-done {
+  margin-top: 24px; padding: 12px 30px; border: none; border-radius: 50px;
+  font-family: 'Nunito', sans-serif; font-size: .92rem; font-weight: 800;
+  cursor: pointer; transition: .2s; display: block;
+}
+.btn-part-done:hover:not(:disabled) { transform: translateY(-2px); }
+.btn-part-done:disabled { background: #E5E7EB; color: #9CA3AF; cursor: not-allowed; }
+
+/* ── Complete ── */
+.lv-complete { max-width: 880px; margin: 0 auto; padding: 16px 24px 52px; text-align: center; }
+.hint-text { font-size: .88rem; color: #9CA3AF; margin-bottom: 18px; }
+.btn-complete {
+  background: linear-gradient(135deg, #0EA5E9, #1565C0);
+  color: #fff; border: none; border-radius: 50px; padding: 16px 44px;
+  font-size: 1rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif;
+  transition: .2s; box-shadow: 0 6px 20px rgba(14,165,233,.35);
+}
+.btn-complete:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(14,165,233,.45); }
+.btn-complete:disabled { background: #D1D5DB; cursor: not-allowed; box-shadow: none; color: #9CA3AF; }
+.nav-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 880px; margin: 0 auto; padding: 0 24px 32px;
+}
+.btn-nav {
+  background: #fff; border: 2px solid #22C55E; color: #15803D;
+  border-radius: 50px; padding: 10px 26px; font-size: .9rem; font-weight: 700;
+  cursor: pointer; text-decoration: none; font-family: 'Nunito', sans-serif; transition: .2s;
+}
+.btn-nav:hover { background: #22C55E; color: #fff; }
+.btn-nav.next { background: #0EA5E9; color: #fff; border-color: #0EA5E9; }
+.btn-nav.next:hover { background: #0369A1; }
+
+/* ── Tab status chips ── */
+.tab-status {
+  display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 24px 0;
+  max-width: 880px; margin-left: auto; margin-right: auto;
+}
+.ts-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: #F3F4F6; border-radius: 99px; padding: 6px 14px;
+  font-size: .8rem; font-weight: 700; color: #6B7280; transition: .3s;
+}
+.ts-chip.done { background: #DCFCE7; color: #15803D; }
+.ts-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- Hero -->
+<div class="lv-hero">
+  <div class="lv-badge"> LEVEL 2 — JENIS SAMPAH</div>
+  <div class="lv-title"> Jenis Sampah & Karakteristiknya</div>
+  <div class="lv-subtitle">3 Bagian: Organik · Plastik & Kaca · B3 & E-Waste</div>
+  <div class="xp-pill">⚡ +75 XP saat selesai</div>
+</div>
+
+<!-- Sticky Progress -->
+<div class="lv-progress">
+  <span style="font-size:12px;font-weight:800;color:#374151">Progress</span>
+  <div class="lv-progress-bar"><div class="lv-progress-fill" id="prog-fill"></div></div>
+  <span class="lv-progress-label" id="prog-lbl">0%</span>
+</div>
+
+<!-- Tab Status Chips -->
+<div class="tab-status">
+  <div class="ts-chip" id="ts-organic"><div class="ts-dot"></div>Part 1: Organik</div>
+  <div class="ts-chip" id="ts-plastic"><div class="ts-dot"></div>Part 2: Plastik & Kaca</div>
+  <div class="ts-chip" id="ts-b3"><div class="ts-dot"></div>Part 3: B3 & E-Waste</div>
+</div>
+
+<!-- Tabs Nav -->
+<div class="tabs-nav">
+  <button class="tab-btn active" data-tab="organic" onclick="switchTab('organic')">
+    🌱 Part 1<br>Organik
+    <div class="tab-check">✓</div>
+  </button>
+  <button class="tab-btn" data-tab="plastic" onclick="switchTab('plastic')">
+    🧴 Part 2<br>Plastik & Kaca
+    <div class="tab-check">✓</div>
+  </button>
+  <button class="tab-btn" data-tab="b3" onclick="switchTab('b3')">
+    ⚠️ Part 3<br>B3 & E-Waste
+    <div class="tab-check">✓</div>
+  </button>
+</div>
+
+<!-- ═══════════ TAB 1: ORGANIK ═══════════ -->
+<div class="tab-pane active" id="tab-organic">
+  <div class="section-label" style="background:#DCFCE7;color:#15803D">🌱 PART 1 — SAMPAH ORGANIK</div>
+  <h2 class="section-heading" style="color:#14532D">Organik: Dari Alam, Kembali ke Alam</h2>
+  <p class="section-body">
+    Sampah organik berasal dari makhluk hidup dan terurai secara biologis.
+    Meski alami, jika dibuang ke TPA bersama sampah lain — ia menghasilkan <strong>gas metana</strong>
+    yang berbahaya bagi iklim. Solusi terbaik? <strong>Kompos.</strong>
+  </p>
+  <p class="section-body">
+    Komposting mengubah sampah organik menjadi pupuk alami kaya nutrisi.
+    Butuh kombinasi <em>bahan hijau</em> (nitrogen: sisa sayur, rumput) dan <em>bahan coklat</em> (karbon: daun kering, kardus).
+  </p>
+
+  <div class="kompos-sim">
+    <div class="kompos-title">⚗️ Simulasi Proses Kompos — Klik setiap tahap untuk belajar!</div>
+    <div class="kompos-stages">
+      <div class="kompos-stage active" data-stage="0" style="background:#FFFDE7;border-color:#FDD835" onclick="showStage(0)">
+        <span class="ks-icon">🥬</span>
+        <div class="ks-label">Kumpulkan</div>
+        <div class="ks-week">Hari 1</div>
+      </div>
+      <div class="kompos-stage" data-stage="1" style="background:#FFF8E1;border-color:#FFB300" onclick="showStage(1)">
+        <span class="ks-icon">🦠</span>
+        <div class="ks-label">Dekomposisi</div>
+        <div class="ks-week">Minggu 1–2</div>
+      </div>
+      <div class="kompos-stage" data-stage="2" style="background:#F3E5F5;border-color:#9C27B0" onclick="showStage(2)">
+        <span class="ks-icon">🌡️</span>
+        <div class="ks-label">Fase Panas</div>
+        <div class="ks-week">Minggu 3–4</div>
+      </div>
+      <div class="kompos-stage" data-stage="3" style="background:#E8F5E9;border-color:#43A047" onclick="showStage(3)">
+        <span class="ks-icon">🍫</span>
+        <div class="ks-label">Pematangan</div>
+        <div class="ks-week">Bulan 2–3</div>
+      </div>
+      <div class="kompos-stage" data-stage="4" style="background:#F1F8E9;border-color:#8BC34A" onclick="showStage(4)">
+        <span class="ks-icon">🌱</span>
+        <div class="ks-label">Kompos Jadi!</div>
+        <div class="ks-week">✅ Selesai</div>
+      </div>
+    </div>
+    <div class="kompos-progress-bar">
+      <div class="kompos-progress-fill" id="kpf" style="width:20%"></div>
+    </div>
+    <div class="kompos-desc show" id="kompos-desc">
+      🥬 <strong>Tahap 1 — Kumpulkan Bahan:</strong> Pisahkan sisa sayuran, kulit buah, dan daun kering.
+      Campur bahan hijau (N) dan coklat (C) dengan rasio 1:3. Pastikan ada cukup udara dan kelembapan.
+    </div>
+  </div>
+
+  <button class="btn-part-done" id="btn-organic"
+    style="background:linear-gradient(135deg,#22C55E,#15803D);color:#fff;box-shadow:0 4px 16px rgba(34,197,94,.3)"
+    onclick="completeTab('organic')">
+    ✓ Selesai Part 1 — Organik (+20 XP)
+  </button>
+</div>
+
+<!-- ═══════════ TAB 2: PLASTIK & KACA ═══════════ -->
+<div class="tab-pane" id="tab-plastic">
+  <div class="section-label" style="background:#EFF6FF;color:#1D4ED8">🧴 PART 2 — PLASTIK & KACA</div>
+  <h2 class="section-heading" style="color:#1E3A8A">Bahaya Plastik & Potensi Kaca</h2>
+  <p class="section-body">
+    Plastik diproduksi dari minyak bumi — sekali dipakai, butuh <strong>400–1.000 tahun</strong> untuk terurai.
+    Yang lebih menakutkan: plastik tidak benar-benar hilang, melainkan pecah menjadi <strong>mikroplastik</strong>
+    (partikel &lt;5mm) yang masuk ke air, tanah, rantai makanan — bahkan ditemukan di darah manusia.
+  </p>
+
+  <div class="plastic-facts">
+    <strong>💡 Fakta Mengejutkan tentang Plastik & Kaca:</strong>
+    <ul>
+      <li>🌊 8 juta ton plastik masuk ke laut setiap tahun</li>
+      <li>🚰 Mikroplastik ditemukan di 83% air keran dunia</li>
+      <li>💳 Manusia konsumsi ~5g plastik/minggu (setara kartu kredit)</li>
+      <li>♻️ Kaca: 100% dapat didaur ulang tanpa kehilangan kualitas, selamanya</li>
+    </ul>
+  </div>
+
+  <div class="section-label" style="background:#EFF6FF;color:#1D4ED8">👆 INTERAKTIF — PILIH TINDAKAN</div>
+  <h3 style="font-size:1.1rem;font-weight:800;color:#1E3A8A;margin:0 0 8px">Apa yang Kamu Pilih? Klik dan Lihat Dampaknya!</h3>
+  <p style="color:#6B7280;font-size:.88rem;margin-bottom:16px">Klik tindakan di bawah dan lihat efeknya ke lingkungan:</p>
+
+  <div class="action-grid">
+    <div class="action-btn good" onclick="pickAction(this,'✅ Botol reusable menggantikan ~150 botol plastik/tahun. Hemat uang & selamatkan laut! 🐋','good')">
+      <span class="ab-icon">🍶</span>
+      <div class="ab-text">Bawa botol minum sendiri</div>
+      <div class="ab-result">✅ Botol reusable menggantikan ~150 botol plastik/tahun. Hemat uang & selamatkan laut!</div>
+    </div>
+    <div class="action-btn bad" onclick="pickAction(this,'❌ Setiap tas plastik butuh 500 tahun terurai. Gunakan tas kain!','bad')">
+      <span class="ab-icon">🛍️</span>
+      <div class="ab-text">Ambil kantong plastik sekali pakai</div>
+      <div class="ab-result">❌ Butuh 500 tahun terurai. Berujung ke laut & masuk rantai makanan ikan.</div>
+    </div>
+    <div class="action-btn good" onclick="pickAction(this,'✅ Kaca 100% recyclable tanpa kehilangan kualitas. Bisa dipakai ratusan kali!','good')">
+      <span class="ab-icon">🫙</span>
+      <div class="ab-text">Pilih kemasan kaca daripada plastik</div>
+      <div class="ab-result">✅ Kaca 100% recyclable tanpa kehilangan kualitas. Pilihan jauh lebih baik!</div>
+    </div>
+    <div class="action-btn bad" onclick="pickAction(this,'❌ 500 juta sedotan plastik dibuang setiap hari di AS saja. Sulit didaur ulang!','bad')">
+      <span class="ab-icon">🥤</span>
+      <div class="ab-text">Pakai sedotan plastik setiap hari</div>
+      <div class="ab-result">❌ 500 juta sedotan plastik dibuang per hari! Pilih sedotan bambu/kertas.</div>
+    </div>
+    <div class="action-btn good" onclick="pickAction(this,'✅ Daur ulang plastik hemat 88% energi vs produksi baru. Satu langkah kecil, dampak besar!','good')">
+      <span class="ab-icon">♻️</span>
+      <div class="ab-text">Pilah & daur ulang botol plastik</div>
+      <div class="ab-result">✅ Daur ulang plastik hemat 88% energi dibanding produksi baru!</div>
+    </div>
+    <div class="action-btn bad" onclick="pickAction(this,'❌ Membakar plastik lepaskan dioksin — karsinogen berbahaya! Bahaya bagi kesehatan.','bad')">
+      <span class="ab-icon">🔥</span>
+      <div class="ab-text">Bakar plastik di kebun</div>
+      <div class="ab-result">❌ Membakar plastik lepaskan dioksin — karsinogen berbahaya & merusak ozon!</div>
+    </div>
+  </div>
+
+  <button class="btn-part-done" id="btn-plastic"
+    style="background:linear-gradient(135deg,#3B82F6,#1565C0);color:#fff;box-shadow:0 4px 16px rgba(59,130,246,.3)"
+    onclick="completeTab('plastic')">
+    ✓ Selesai Part 2 — Plastik & Kaca (+20 XP)
+  </button>
+</div>
+
+<!-- ═══════════ TAB 3: B3 & E-WASTE ═══════════ -->
+<div class="tab-pane" id="tab-b3">
+  <div class="section-label" style="background:#FFF1F2;color:#991B1B">⚠️ PART 3 — B3 & E-WASTE</div>
+  <h2 class="section-heading" style="color:#7F1D1D">Limbah Berbahaya di Sekitar Kita</h2>
+  <p class="section-body">
+    B3 (Bahan Berbahaya dan Beracun) dan E-Waste adalah jenis sampah paling merusak —
+    mengandung racun yang mencemari tanah dan air selama <strong>puluhan hingga ratusan tahun</strong>.
+    Yang mengejutkan? Banyak ada di rumah kita tanpa disadari.
+  </p>
+
+  <div class="section-label" style="background:#FFF1F2;color:#991B1B">☠️ INTERAKTIF — KLIK ITEM</div>
+  <h3 style="font-size:1.1rem;font-weight:800;color:#7F1D1D;margin:0 0 8px">Klik item untuk melihat efek racunnya!</h3>
+  <p style="color:#6B7280;font-size:.88rem;margin-bottom:8px">Tap/klik item untuk mengetahui kandungan berbahaya & cara aman membuangnya:</p>
+
+  <div class="b3-grid">
+    <div class="b3-item" onclick="showB3('Baterai AA/AAA','🔋','SANGAT BERBAHAYA','Mengandung merkuri, kadmium, dan timbal. Jika bocor di TPA, mencemari air tanah hingga 40 tahun. Satu baterai AA mencemari 400 liter air!','Kumpulkan di drop box baterai di mall atau toko elektronik. JANGAN buang ke tempat sampah biasa.')">
+      <span class="b3-icon">🔋</span>
+      <div class="b3-name">Baterai</div>
+      <div class="b3-sub">Klik lihat bahaya ☠️</div>
+    </div>
+    <div class="b3-item" onclick="showB3('Smartphone Bekas','📱','E-WASTE TINGGI','Mengandung timbal, merkuri, arsenik, kadmium, dan bahan langka bumi. Dibuang ke TPA → racun masuk ke tanah & air tanah.','Kembalikan ke toko (trade-in), berikan ke program daur ulang elektronik resmi KLHK atau brand.')">
+      <span class="b3-icon">📱</span>
+      <div class="b3-name">Smartphone</div>
+      <div class="b3-sub">Klik lihat bahaya ☠️</div>
+    </div>
+    <div class="b3-item" onclick="showB3('Cat Tembok','🪣','BERBAHAYA','Cat mengandung timbal, seng, dan pelarut organik. Jika dibuang ke saluran air → mencemari sungai & ekosistem akuatik.','Gunakan sampai habis atau sumbangkan. Kaleng kosong kering bisa didaur ulang terpisah.')">
+      <span class="b3-icon">🪣</span>
+      <div class="b3-name">Cat</div>
+      <div class="b3-sub">Klik lihat bahaya ☠️</div>
+    </div>
+    <div class="b3-item" onclick="showB3('Obat Kedaluwarsa','💊','BERBAHAYA','Dibuang ke toilet → residu obat mencemari air minum. Antibiotik di air → resistensi antimikroba (AMR) global.','Kembalikan ke apotek atau fasilitas kesehatan. Banyak apotek menerima obat kedaluwarsa.')">
+      <span class="b3-icon">💊</span>
+      <div class="b3-name">Obat Kadaluwarsa</div>
+      <div class="b3-sub">Klik lihat bahaya ☠️</div>
+    </div>
+    <div class="b3-item" onclick="showB3('Lampu Neon/CFL','💡','BERBAHAYA','Mengandung uap merkuri. Jika pecah → lepaskan merkuri ke udara. Merkuri satu lampu bisa mencemari 30.000 liter air!','Bungkus rapat dan bawa ke tempat pembuangan B3 khusus. Jangan hancurkan!')">
+      <span class="b3-icon">💡</span>
+      <div class="b3-name">Lampu Neon</div>
+      <div class="b3-sub">Klik lihat bahaya ☠️</div>
+    </div>
+    <div class="b3-item" onclick="showB3('Pestisida/Pembasmi','🧴','SANGAT BERBAHAYA','Mengandung organofosfat dan karbamat — neurotoksin kuat. Di tanah bisa bertahan 10–30 tahun. Masuk ke rantai makanan.','Gunakan dosis tepat, simpan di wadah asli. Sisa pestisida → fasilitas pembuangan B3 resmi.')">
+      <span class="b3-icon">🧴</span>
+      <div class="b3-name">Pestisida</div>
+      <div class="b3-sub">Klik lihat bahaya ☠️</div>
+    </div>
+  </div>
+
+  <button class="btn-part-done" id="btn-b3"
+    style="background:linear-gradient(135deg,#EF4444,#991B1B);color:#fff;box-shadow:0 4px 16px rgba(239,68,68,.3)"
+    onclick="completeTab('b3')">
+    ✓ Selesai Part 3 — B3 & E-Waste (+20 XP)
+  </button>
+</div>
+
+<!-- B3 Modal -->
+<div class="b3-modal" id="b3-modal" onclick="closeB3Modal(event)">
+  <div class="b3-modal-box">
+    <button class="b3-modal-close" onclick="closeB3Modal()">✕</button>
+    <span class="bm-icon" id="bm-icon">🔋</span>
+    <div class="bm-name" id="bm-name">Nama Item</div>
+    <div class="bm-danger" id="bm-danger">BERBAHAYA</div>
+    <div class="bm-desc" id="bm-desc"></div>
+    <div class="bm-tip" id="bm-tip"></div>
+  </div>
+</div>
+
+<!-- Complete All -->
+<div class="lv-complete">
+  <p class="hint-text" id="hint-txt">Selesaikan semua 3 bagian untuk melanjutkan</p>
+  <button class="btn-complete" id="btn-done" disabled onclick="doComplete()">✅ Selesaikan Level 2</button>
+</div>
+<div class="nav-footer">
+  <a href="level1.html" class="btn-nav">← Level 1</a>
+  <a href="level3.html" class="btn-nav next" id="btn-next" style="display:none">Level 3 →</a>
+</div>
+
+<script src="js/state.js"></script>
+<script src="js/nav.js"></script>
+<script>
+const tabDone = { organic: false, plastic: false, b3: false };
+const DONE = EcoState.getLevelState(2) === 'done';
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelector(`[data-tab="${id}"]`).classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+// ─── Kompos stages ───
+const stageDescs = [
+  '🥬 <strong>Tahap 1 — Kumpulkan Bahan:</strong> Pisahkan sisa sayuran, kulit buah, daun kering. Campur bahan hijau (N) dan coklat (C) rasio 1:3. Pastikan kelembapan cukup.',
+  '🦠 <strong>Tahap 2 — Dekomposisi Awal:</strong> Bakteri mulai bekerja! Aduk 2–3× seminggu agar oksigen masuk. Jaga kelembapan seperti spons yang diperas.',
+  '🌡️ <strong>Tahap 3 — Fase Panas:</strong> Suhu naik 55–65°C — ini tanda bakteri aktif! Bakteri termofilik membunuh patogen & percepat proses. Aduk lebih sering.',
+  '🍫 <strong>Tahap 4 — Pematangan:</strong> Suhu turun, bahan mulai menyerupai tanah gelap. Biarkan 2–4 minggu agar kompos matang sempurna dan siap digunakan.',
+  '🌱 <strong>Tahap 5 — Kompos Siap!</strong> Berwarna coklat gelap, bau tanah segar, struktur remah. Siap dipakai untuk tanaman! 1 kg sampah organik → ~300g kompos berkualitas tinggi.'
+];
+let stagesMax = 0;
+
+function showStage(n) {
+  document.querySelectorAll('.kompos-stage').forEach((s, i) => {
+    s.classList.toggle('active', i <= n);
+  });
+  document.getElementById('kompos-desc').innerHTML = stageDescs[n];
+  document.getElementById('kompos-desc').classList.add('show');
+  document.getElementById('kpf').style.width = ((n + 1) / 5 * 100) + '%';
+  if (n > stagesMax) { stagesMax = n; EcoState.addXP(2); updateNavXP(); }
+}
+
+// ─── Plastic actions ───
+let actionsSelected = 0;
+function pickAction(el, msg, type) {
+  if (el.classList.contains('selected')) return;
+  el.classList.add('selected', type);
+  actionsSelected++;
+  EcoState.addXP(3); updateNavXP(); showXPToast(3, 'pilihan diambil!');
+  if (actionsSelected >= 3) document.getElementById('btn-plastic').disabled = false;
+}
+
+// ─── B3 modal ───
+let b3Viewed = 0;
+function showB3(name, icon, danger, desc, tip) {
+  document.getElementById('bm-icon').textContent = icon;
+  document.getElementById('bm-name').textContent = name;
+  document.getElementById('bm-danger').textContent = danger;
+  document.getElementById('bm-desc').textContent = desc;
+  document.getElementById('bm-tip').textContent = '💡 Cara Aman: ' + tip;
+  document.getElementById('b3-modal').classList.add('show');
+  b3Viewed++;
+  EcoState.addXP(3); updateNavXP(); showXPToast(3, 'item ditemukan!');
+  if (b3Viewed >= 3) document.getElementById('btn-b3').disabled = false;
+  // Mark item
+  const items = document.querySelectorAll('.b3-item');
+  items.forEach(item => {
+    if (item.querySelector('.b3-name').textContent.toLowerCase().includes(name.split(' ')[0].toLowerCase())) {
+      item.classList.add('clicked');
+    }
+  });
+}
+function closeB3Modal(e) {
+  if (!e || e.target.id === 'b3-modal') {
+    document.getElementById('b3-modal').classList.remove('show');
+  }
+}
+
+// ─── Tab complete ───
+function completeTab(tab) {
+  if (tabDone[tab]) return;
+  tabDone[tab] = true;
+  const btn = document.getElementById('btn-' + tab);
+  btn.textContent = '✅ Bagian Selesai!';
+  btn.disabled = true;
+  document.querySelector(`[data-tab="${tab}"]`).classList.add('done');
+  document.getElementById('ts-' + tab).classList.add('done');
+  EcoState.addXP(20); updateNavXP(); showXPToast(20, 'bagian selesai!');
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = Object.values(tabDone).filter(Boolean).length;
+  const pct = Math.min(100, Math.round(done / 3 * 100));
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-lbl').textContent = pct + '%';
+  EcoState.setLevelProgress(2, pct);
+  const allDone = Object.values(tabDone).every(Boolean);
+  if (allDone || DONE) {
+    document.getElementById('btn-done').disabled = false;
+    document.getElementById('hint-txt').textContent = '🎉 Semua bagian selesai! Klik tombol di bawah.';
+  }
+  if (DONE) document.getElementById('btn-next').style.display = 'inline-block';
+}
+
+function doComplete() {
+  EcoState.completeLevel(2); updateNavXP();
+  showNotif('🔬 Level 2 selesai! +75 XP · Badge 🔬 didapat!');
+  document.getElementById('btn-done').textContent = '✅ Level 2 Selesai!';
+  document.getElementById('btn-done').disabled = true;
+  document.getElementById('btn-next').style.display = 'inline-block';
+}
+
+// ─── Init if DONE ───
+if (DONE) {
+  tabDone.organic = tabDone.plastic = tabDone.b3 = true;
+  ['organic', 'plastic', 'b3'].forEach(t => {
+    const b = document.getElementById('btn-' + t);
+    if (b) { b.textContent = '✅ Selesai!'; b.disabled = true; }
+    document.querySelector(`[data-tab="${t}"]`).classList.add('done');
+    document.getElementById('ts-' + t).classList.add('done');
+  });
+  document.getElementById('btn-done').textContent = '✅ Sudah Selesai';
+  document.getElementById('btn-done').disabled = true;
+}
+
+// Initial button states
+document.getElementById('btn-organic').disabled = false; // can complete anytime
+document.getElementById('btn-plastic').disabled = actionsSelected < 3;
+document.getElementById('btn-b3').disabled = b3Viewed < 3;
+
+updateProgress();
+updateNavXP();
+</script>
+</body>
+</html>

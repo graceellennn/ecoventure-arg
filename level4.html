@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Level 4 – 3R & Real Action | EcoVenture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<style>
+body { background: #FFFBEB; font-family: 'Nunito', sans-serif; }
+
+/* ── Hero ── */
+.lv-hero {
+  background: url("assets/land5.png") center/cover no-repeat;
+  color: #fbfbfb;
+  padding: 55px 20px 45px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 150px;
+
+  min-height: 70vh; 
+  
+}
+
+.lv-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+   z-index: 0;
+  background: rgba(0, 0, 0, 0.45); /* overlay gelap */
+}
+
+.lv-hero * {
+  position: relative;
+  z-index: 1;
+}
+.lv-badge {
+  display: inline-block; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
+  border-radius: 50px; padding: 5px 18px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 14px;
+}
+.lv-title { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 900; margin: 0 0 8px; }
+.lv-subtitle { font-size: .95rem; opacity: .85; }
+.xp-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background:  rgba(252,211,77,.2); border: 1.5px solid rgba(252,211,77,.45);
+  border-radius: 50px; padding: 5px 16px; font-size: 13px; font-weight: 800;
+  color: #FEF08A; margin-top: 16px;
+}
+
+/* ── Progress ── */
+.lv-progress {
+  background: #fff; padding: 11px 24px; display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08); position: sticky; top: 60px; z-index: 40;
+  border-bottom: 2px solid #FFFBEB;
+}
+.lv-progress-bar { flex: 1; height: 9px; background: #E5E7EB; border-radius: 99px; overflow: hidden; }
+.lv-progress-fill {
+  height: 100%; background: linear-gradient(90deg, #D97706, #FBBF24);
+  border-radius: 99px; transition: width .6s ease; width: 0%;
+}
+.lv-progress-label { font-size: 12px; font-weight: 800; color: #D97706; min-width: 44px; text-align: right; }
+
+/* ── Section ── */
+.lv-section { max-width: 880px; margin: 0 auto; padding: 32px 24px; }
+.section-label {
+  display: inline-flex; align-items: center; gap: 6px; border-radius: 8px;
+  padding: 4px 14px; font-size: 11px; font-weight: 800; letter-spacing: .5px;
+  margin-bottom: 12px; text-transform: uppercase;
+}
+.section-heading { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 900; margin: 0 0 10px; }
+.section-body { color: #374151; line-height: 1.8; font-size: .93rem; margin-bottom: 16px; }
+
+/* ── 3R Tabs ── */
+.r3-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.r3-tab {
+  flex: 1; min-width: 100px; padding: 13px 8px; border: 2.5px solid #E5E7EB;
+  background: #fff; border-radius: 14px; font-family: 'Nunito', sans-serif;
+  font-size: .88rem; font-weight: 800; cursor: pointer; transition: .25s; text-align: center;
+  color: #6B7280; line-height: 1.3;
+}
+.r3-tab:hover:not(.active) { border-color: #FCD34D; background: #FFFBEB; color: #374151; }
+.r3-tab.done { position: relative; }
+.r3-tab.done::after { content: '✓'; position: absolute; top: 6px; right: 8px; font-size: 10px; }
+.r3-tab[data-r="reduce"].active  { background: linear-gradient(135deg, #DC2626, #991B1B); color: #fff; border-color: transparent; }
+.r3-tab[data-r="reuse"].active   { background: linear-gradient(135deg, #1D4ED8, #1565C0); color: #fff; border-color: transparent; }
+.r3-tab[data-r="recycle"].active { background: linear-gradient(135deg, #15803D, #14532D); color: #fff; border-color: transparent; }
+.r3-pane { display: none; animation: fadeIn .3s ease; }
+.r3-pane.active { display: block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+/* ── Sim Scene ── */
+.sim-scene {
+  background: #fff; border-radius: 20px; padding: 24px; box-shadow: 0 3px 16px rgba(0,0,0,.08);
+  margin-bottom: 16px;
+}
+.sim-title { font-weight: 900; font-size: .95rem; margin-bottom: 16px; color: #374151; }
+.sim-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.sim-opt {
+  border: 2.5px solid #E5E7EB; border-radius: 14px; padding: 14px 12px;
+  cursor: pointer; text-align: center; transition: .25s; background: #FAFAFA;
+  font-size: .85rem; font-weight: 700; color: #374151; font-family: 'Nunito', sans-serif;
+}
+.sim-opt:hover:not(.chosen) { border-color: #FCD34D; background: #FFFBEB; transform: translateY(-2px); }
+.sim-opt.chosen.good { background: linear-gradient(135deg,#F0FDF4,#DCFCE7); border-color: #22C55E; color: #14532D; }
+.sim-opt.chosen.bad  { background: linear-gradient(135deg,#FFF1F2,#FFE4E6); border-color: #EF4444; color: #7F1D1D; }
+.sim-opt-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+.sim-result {
+  display: none; padding: 12px 16px; border-radius: 10px; font-size: .86rem;
+  line-height: 1.6; margin-top: 14px; border-left: 4px solid;
+}
+.sim-result.show { display: block; animation: fadeIn .3s ease; }
+.sim-result.good { background: #F0FDF4; color: #14532D; border-color: #22C55E; }
+.sim-result.bad  { background: #FFF1F2; color: #7F1D1D; border-color: #EF4444; }
+
+/* ── Impact Bars ── */
+.impact-bars { margin-top: 20px; background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,.07); }
+.impact-bars-title { font-weight: 800; font-size: .9rem; color: #374151; margin-bottom: 14px; }
+.ib-row { margin-bottom: 12px; }
+.ib-head { display: flex; justify-content: space-between; font-size: .82rem; font-weight: 700; color: #374151; margin-bottom: 4px; }
+.ib-bar { height: 10px; background: #E5E7EB; border-radius: 99px; overflow: hidden; }
+.ib-fill { height: 100%; border-radius: 99px; transition: width .8s ease; width: 0%; }
+
+/* ── Recycle Slider ── */
+.recycle-slider-wrap { background: #fff; border-radius: 20px; padding: 24px; box-shadow: 0 3px 16px rgba(0,0,0,.08); margin-bottom: 16px; }
+.recycle-input { width: 100%; accent-color: #22C55E; cursor: pointer; margin: 10px 0; height: 6px; }
+.recycle-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 16px; }
+.rec-stat { border-radius: 14px; padding: 16px 12px; text-align: center; }
+.rec-val { font-size: 1.6rem; font-weight: 900; margin-bottom: 4px; }
+.rec-unit { font-size: .72rem; font-weight: 700; opacity: .8; }
+
+/* ── Checklist Section ── */
+.checklist-card {
+  background: #fff; border-radius: 20px; padding: 24px;
+  box-shadow: 0 3px 16px rgba(0,0,0,.08); overflow: hidden;
+}
+.checklist-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 14px; margin-bottom: 22px;
+}
+.streak-card {
+  background: linear-gradient(135deg, #D97706, #92400E);
+  color: #fff; border-radius: 16px; padding: 14px 20px; text-align: center;
+  min-width: 120px;
+}
+.streak-num { font-size: 2.5rem; font-weight: 900; line-height: 1; }
+.streak-lbl { font-size: .75rem; opacity: .9; font-weight: 700; margin-top: 2px; }
+.streak-days { display: flex; gap: 4px; margin-top: 10px; justify-content: center; }
+.streak-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,.25); transition: .3s; }
+.streak-dot.filled { background: #FDE047; box-shadow: 0 0 6px rgba(253,224,71,.6); }
+
+.checklist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+.check-item {
+  background: #F9FAFB; border-radius: 14px; padding: 15px 14px;
+  display: flex; align-items: center; gap: 12px; cursor: pointer;
+  transition: .25s; border: 2.5px solid transparent;
+}
+.check-item:hover { border-color: #FCD34D; background: #FFFBEB; transform: translateX(3px); }
+.check-item.checked { background: #F0FDF4; border-color: #22C55E; }
+.check-item.checked:hover { background: #DCFCE7; }
+.ci-check {
+  width: 28px; height: 28px; border-radius: 50%; border: 2.5px solid #D1D5DB;
+  display: flex; align-items: center; justify-content: center; font-size: .9rem;
+  flex-shrink: 0; transition: .2s;
+}
+.check-item.checked .ci-check { background: #22C55E; border-color: #22C55E; color: #fff; }
+.ci-icon { font-size: 1.5rem; flex-shrink: 0; }
+.ci-text { flex: 1; }
+.ci-label { font-size: .87rem; font-weight: 700; color: #374151; margin-bottom: 2px; }
+.ci-xp { font-size: .72rem; color: #22C55E; font-weight: 800; }
+
+/* ── Today's Date ── */
+.today-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #F3F4F6; border-radius: 99px; padding: 5px 14px;
+  font-size: .82rem; font-weight: 700; color: #374151; margin-bottom: 16px;
+}
+
+/* ── Impact Calculator ── */
+.impact-calc {
+  background: linear-gradient(135deg, #0F3D2A, #15803D);
+  border-radius: 20px; padding: 24px; color: #fff; margin-top: 24px;
+}
+.impact-calc-title { font-weight: 900; font-size: 1rem; margin-bottom: 18px; opacity: .9; }
+.calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.calc-box { border-radius: 14px; padding: 16px 12px; text-align: center; background: rgba(255,255,255,.1); }
+.calc-icon { font-size: 2rem; margin-bottom: 6px; display: block; }
+.calc-val { font-size: 1.6rem; font-weight: 900; margin-bottom: 3px; transition: .5s; }
+.calc-unit { font-size: .72rem; font-weight: 700; opacity: .8; }
+
+/* ── Section Banner ── */
+.info-banner {
+  border-radius: 14px; padding: 18px 20px; margin-bottom: 18px; border-left: 4px solid;
+}
+.info-banner p { font-size: .88rem; margin: 6px 0 0; line-height: 1.7; }
+
+/* ── Part Done Button ── */
+.btn-part-done {
+  margin-top: 20px; padding: 12px 28px; border: none; border-radius: 50px;
+  font-family: 'Nunito', sans-serif; font-size: .9rem; font-weight: 800;
+  cursor: pointer; transition: .2s; display: block;
+}
+.btn-part-done:hover:not(:disabled) { transform: translateY(-2px); }
+
+/* ── Complete ── */
+.lv-complete { max-width: 880px; margin: 0 auto; padding: 16px 24px 52px; text-align: center; }
+.hint-text { font-size: .88rem; color: #9CA3AF; margin-bottom: 18px; }
+.btn-complete {
+  background: linear-gradient(135deg, #D97706, #0F3D2A);
+  color: #fff; border: none; border-radius: 50px; padding: 16px 44px;
+  font-size: 1rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif;
+  transition: .2s; box-shadow: 0 6px 20px rgba(217,119,6,.35);
+}
+.btn-complete:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(217,119,6,.45); }
+.btn-complete:disabled { background: #D1D5DB; cursor: not-allowed; box-shadow: none; color: #9CA3AF; }
+.nav-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 880px; margin: 0 auto; padding: 0 24px 32px;
+}
+.btn-nav {
+  background: #fff; border: 2px solid #22C55E; color: #15803D;
+  border-radius: 50px; padding: 10px 26px; font-size: .9rem; font-weight: 700;
+  cursor: pointer; text-decoration: none; font-family: 'Nunito', sans-serif; transition: .2s;
+}
+.btn-nav:hover { background: #22C55E; color: #fff; }
+.btn-nav.next {
+  background: linear-gradient(135deg, #D97706, #92400E); color: #fff;
+  border-color: transparent; box-shadow: 0 4px 14px rgba(217,119,6,.35);
+}
+.btn-nav.next:hover { opacity: .9; transform: translateY(-1px); }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- Hero -->
+<div class="lv-hero">
+  <div class="lv-badge"> LEVEL 4 — 3R & REAL ACTION</div>
+  <div class="lv-title"> Reduce · Reuse · Recycle</div>
+  <div class="lv-subtitle">Aksi nyata 3R + Checklist Harian & Habit Tracker</div>
+  <div class="xp-pill">⚡ +100 XP saat selesai</div>
+</div>
+
+<!-- Progress -->
+<div class="lv-progress">
+  <span style="font-size:12px;font-weight:800;color:#374151">Progress</span>
+  <div class="lv-progress-bar"><div class="lv-progress-fill" id="prog-fill"></div></div>
+  <span class="lv-progress-label" id="prog-lbl">0%</span>
+</div>
+
+<!-- SECTION 1: 3R Simulation -->
+<div class="lv-section">
+  <div class="section-label" style="background:#FEF3C7;color:#92400E">♻️ SIMULASI 3R</div>
+  <h2 class="section-heading" style="color:#78350F">Reduce · Reuse · Recycle</h2>
+  <p class="section-body">
+    3R adalah hierarki terbaik pengelolaan sampah. Urutannya penting:
+    <strong>Reduce</strong> dulu (kurangi penggunaan), baru <strong>Reuse</strong> (pakai ulang),
+    lalu <strong>Recycle</strong> (daur ulang) sebagai pilihan terakhir.
+    Klik setiap tab dan coba simulasinya!
+  </p>
+
+  <div class="r3-tabs">
+    <button class="r3-tab active" data-r="reduce" onclick="switchR('reduce')">🚫 Reduce<br><small>Kurangi</small></button>
+    <button class="r3-tab" data-r="reuse" onclick="switchR('reuse')">🔄 Reuse<br><small>Pakai Ulang</small></button>
+    <button class="r3-tab" data-r="recycle" onclick="switchR('recycle')">♻️ Recycle<br><small>Daur Ulang</small></button>
+  </div>
+
+  <!-- REDUCE -->
+  <div class="r3-pane active" id="r3-reduce">
+    <div class="info-banner" style="background:#FFF1F2;border-color:#EF4444">
+      <strong style="color:#B91C1C">🚫 REDUCE = Kurangi dari Sumber</strong>
+      <p style="color:#555">Pilihan terbaik adalah <em>tidak menghasilkan sampah sama sekali</em>. Setiap produk yang tidak dibeli = sampah yang tidak ada. Reduce adalah langkah paling efektif namun sering diabaikan.</p>
+    </div>
+    <div class="sim-scene">
+      <div class="sim-title">🛒 Kamu sedang belanja di supermarket. Apa yang kamu pilih?</div>
+      <div class="sim-options">
+        <div class="sim-opt" onclick="chooseR('reduce', this, '✅ Belanja produk bulk pakai wadah sendiri = 0 kemasan plastik! Hemat uang juga.', 'good')">
+          <span class="sim-opt-icon">🫙</span>Beli bulk/curah, bawa wadah sendiri
+        </div>
+        <div class="sim-opt" onclick="chooseR('reduce', this, '❌ Produk sachet hasilkan 10× lebih banyak plastik per pemakaian. Mahal & boros!', 'bad')">
+          <span class="sim-opt-icon">🛍️</span>Beli produk sachet kecil-kecil
+        </div>
+        <div class="sim-opt" onclick="chooseR('reduce', this, '✅ Beli ukuran besar = lebih sedikit kemasan per unit. Kurangi frekuensi belanja & sampah!', 'good')">
+          <span class="sim-opt-icon">📦</span>Beli produk ukuran besar/isi ulang
+        </div>
+        <div class="sim-opt" onclick="chooseR('reduce', this, '✅ Membawa tas sendiri menghilangkan kebutuhan 520 kantong plastik/tahun per orang!', 'good')">
+          <span class="sim-opt-icon">👜</span>Bawa tas belanja sendiri
+        </div>
+      </div>
+      <div class="sim-result" id="res-reduce"></div>
+    </div>
+    <div class="impact-bars" id="impact-reduce">
+      <div class="impact-bars-title">📊 Dampak Reduce per Tahun (1 orang) — pilih opsi untuk melihat:</div>
+      <div class="ib-row">
+        <div class="ib-head"><span>🛍️ Kantong plastik dihindari</span><span id="v-bags">0 kantong</span></div>
+        <div class="ib-bar"><div class="ib-fill" id="b-bags" style="background:#EF4444"></div></div>
+      </div>
+      <div class="ib-row">
+        <div class="ib-head"><span>🌿 Penghematan CO₂ (kg/tahun)</span><span id="v-co2r">0 kg</span></div>
+        <div class="ib-bar"><div class="ib-fill" id="b-co2r" style="background:#22C55E"></div></div>
+      </div>
+    </div>
+    <button class="btn-part-done" id="btn-reduce"
+      style="background:linear-gradient(135deg,#EF4444,#991B1B);color:#fff;box-shadow:0 4px 14px rgba(239,68,68,.3)"
+      onclick="completeR('reduce')">✓ Selesai Reduce (+25 XP)</button>
+  </div>
+
+  <!-- REUSE -->
+  <div class="r3-pane" id="r3-reuse">
+    <div class="info-banner" style="background:#EFF6FF;border-color:#3B82F6">
+      <strong style="color:#1E3A8A">🔄 REUSE = Pakai Ulang, Beri Kehidupan Kedua</strong>
+      <p style="color:#555">Sebelum membuang, tanya: <em>"Bisakah ini dipakai lagi?"</em> Reuse memperpanjang umur produk dan menunda perjalanan barang ke TPA. Hemat uang sekaligus hemat sumber daya.</p>
+    </div>
+    <div class="sim-scene">
+      <div class="sim-title">📦 Kamu punya banyak kardus bekas. Apa yang kamu lakukan?</div>
+      <div class="sim-options">
+        <div class="sim-opt" onclick="chooseR('reuse', this, '✅ Upcycling kardus = kreasi tanpa beli baru! 1 kardus bisa jadi rak, organizer, bahkan furnitur sederhana.', 'good')">
+          <span class="sim-opt-icon">🎨</span>Ubah jadi rak atau organizer DIY
+        </div>
+        <div class="sim-opt" onclick="chooseR('reuse', this, '❌ Langsung buang = kehilangan peluang! 1 ton kertas daur ulang bisa hemat 17 pohon.', 'bad')">
+          <span class="sim-opt-icon">🗑️</span>Langsung buang ke tempat sampah
+        </div>
+        <div class="sim-opt" onclick="chooseR('reuse', this, '✅ Donasi ke pemulung/bank sampah = ekonomi sirkular berputar dengan benar! Win-win!', 'good')">
+          <span class="sim-opt-icon">🤝</span>Donasi ke pemulung atau bank sampah
+        </div>
+        <div class="sim-opt" onclick="chooseR('reuse', this, '✅ Pakai ulang untuk packing = hemat biaya & kurangi demand kardus baru. Siklus diperpanjang!', 'good')">
+          <span class="sim-opt-icon">📬</span>Pakai lagi untuk kirim paket
+        </div>
+      </div>
+      <div class="sim-result" id="res-reuse"></div>
+    </div>
+    <button class="btn-part-done" id="btn-reuse"
+      style="background:linear-gradient(135deg,#3B82F6,#1565C0);color:#fff;box-shadow:0 4px 14px rgba(59,130,246,.3)"
+      onclick="completeR('reuse')">✓ Selesai Reuse (+25 XP)</button>
+  </div>
+
+  <!-- RECYCLE -->
+  <div class="r3-pane" id="r3-recycle">
+    <div class="info-banner" style="background:#F0FDF4;border-color:#22C55E">
+      <strong style="color:#14532D">♻️ RECYCLE = Ubah Menjadi Bahan Baru</strong>
+      <p style="color:#555">Recycle mengubah sampah menjadi bahan baku baru melalui proses industri. Efektif, tapi butuh energi. Itulah kenapa Reduce & Reuse harus didahulukan. Tapi jika sudah ada, daur ulang jauh lebih baik dari TPA!</p>
+    </div>
+    <div class="recycle-slider-wrap">
+      <div class="sim-title">🔢 Hitung dampak daur ulangmu — geser slider:</div>
+      <label style="font-size:.88rem;font-weight:800;color:#374151">
+        Botol plastik yang kamu daur ulang per bulan:
+        <strong id="bottle-display" style="color:#22C55E;font-size:1.1rem">10</strong> botol
+      </label>
+      <input type="range" id="bottle-slider" class="recycle-input" min="0" max="60" value="10" oninput="updateRecycle(this.value)">
+      <div class="recycle-stats">
+        <div class="rec-stat" style="background:#F0FDF4">
+          <span class="calc-icon">⚡</span>
+          <div class="rec-val" id="r-energy" style="color:#22C55E">10</div>
+          <div class="rec-unit" style="color:#15803D">Wh energi hemat/bln</div>
+        </div>
+        <div class="rec-stat" style="background:#EFF6FF">
+          <span class="calc-icon">💧</span>
+          <div class="rec-val" id="r-water" style="color:#1D4ED8">30</div>
+          <div class="rec-unit" style="color:#1565C0">liter air hemat/bln</div>
+        </div>
+        <div class="rec-stat" style="background:#FEF3C7">
+          <span class="calc-icon">🌿</span>
+          <div class="rec-val" id="r-co2" style="color:#D97706">0.3</div>
+          <div class="rec-unit" style="color:#92400E">kg CO₂ dikurangi/bln</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-part-done" id="btn-recycle"
+      style="background:linear-gradient(135deg,#22C55E,#14532D);color:#fff;box-shadow:0 4px 14px rgba(34,197,94,.3)"
+      onclick="completeR('recycle')">✓ Selesai Recycle (+25 XP)</button>
+  </div>
+</div>
+
+<!-- SECTION 2: Daily Checklist -->
+<div class="lv-section" style="padding-top:8px">
+  <div class="section-label" style="background:#DCFCE7;color:#15803D">✅ REAL LIFE ACTION</div>
+  <h2 class="section-heading" style="color:#14532D">Checklist Harian & Habit Tracker</h2>
+  <p class="section-body">
+    Perubahan besar dimulai dari kebiasaan kecil sehari-hari.
+    Centang aksi yang sudah kamu lakukan hari ini. <strong>+15 XP per aksi</strong>, konsisten 7 hari = bonus streak!
+  </p>
+
+  <div class="checklist-card">
+    <div class="checklist-header">
+      <div>
+        <div class="today-chip">📅 Hari ini: <span id="today-date">-</span></div>
+        <div style="font-size:.82rem;color:#9CA3AF">Klik aksi yang sudah kamu lakukan hari ini</div>
+      </div>
+      <div class="streak-card">
+        <div class="streak-num" id="streak-num">0</div>
+        <div class="streak-lbl">🔥 Hari Streak</div>
+        <div class="streak-days" id="streak-dots"></div>
+      </div>
+    </div>
+
+    <div class="checklist-grid" id="checklist-grid"></div>
+
+    <!-- Impact Calculator -->
+    <div class="impact-calc">
+      <div class="impact-calc-title">📊 Dampak Aksiku Hari Ini</div>
+      <div class="calc-grid">
+        <div class="calc-box">
+          <span class="calc-icon">🌿</span>
+          <div class="calc-val" id="calc-co2">0</div>
+          <div class="calc-unit">gram CO₂ dikurangi</div>
+        </div>
+        <div class="calc-box">
+          <span class="calc-icon">💧</span>
+          <div class="calc-val" id="calc-water">0</div>
+          <div class="calc-unit">liter air dihemat</div>
+        </div>
+        <div class="calc-box">
+          <span class="calc-icon">🛍️</span>
+          <div class="calc-val" id="calc-plastic">0</div>
+          <div class="calc-unit">gram plastik dihindari</div>
+        </div>
+        <div class="calc-box">
+          <span class="calc-icon">⚡</span>
+          <div class="calc-val" id="calc-xp">0</div>
+          <div class="calc-unit">XP terkumpul hari ini</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Complete -->
+<div class="lv-complete">
+  <p class="hint-text" id="hint-txt">Selesaikan semua 3R & centang minimal 3 aksi harian</p>
+  <button class="btn-complete" id="btn-done" disabled onclick="doComplete()">
+    🌍 Selesaikan Level 4 — Menuju Eco Hero!
+  </button>
+</div>
+<div class="nav-footer">
+  <a href="level3.html" class="btn-nav">← Level 3</a>
+  <a href="eco-hero.html" class="btn-nav next" id="btn-next" style="display:none">🏆 Eco Hero!</a>
+</div>
+
+<script src="js/state.js"></script>
+<script src="js/nav.js"></script>
+<script>
+const rDone = { reduce: false, reuse: false, recycle: false };
+let checksDoneToday = 0;
+let dailyXP = 0;
+const DONE = EcoState.getLevelState(4) === 'done';
+
+// ─── 3R Tab ───
+function switchR(id) {
+  document.querySelectorAll('.r3-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.r3-pane').forEach(p => p.classList.remove('active'));
+  document.querySelector(`[data-r="${id}"]`).classList.add('active');
+  document.getElementById('r3-' + id).classList.add('active');
+}
+
+// ─── R3 Choices ───
+const choiceMade = { reduce: false, reuse: false, recycle: false };
+function chooseR(tab, el, msg, type) {
+  // Allow multiple clicks but show result
+  document.querySelectorAll(`#r3-${tab} .sim-opt`).forEach(o => {
+    o.classList.remove('chosen', 'good', 'bad');
+  });
+  el.classList.add('chosen', type);
+  const res = document.getElementById('res-' + tab);
+  res.textContent = msg;
+  res.className = 'sim-result show ' + type;
+  EcoState.addXP(5); updateNavXP(); showXPToast(5, 'pilihan!');
+
+  if (!choiceMade[tab]) {
+    choiceMade[tab] = true;
+    // Update impact bars for reduce
+    if (tab === 'reduce') updateReduceBars(type === 'good');
+  }
+  updateProgress();
+}
+
+function updateReduceBars(isGood) {
+  const bags = isGood ? 520 : 50;
+  const co2 = isGood ? 8.5 : 0.8;
+  document.getElementById('v-bags').textContent = bags + ' kantong';
+  document.getElementById('v-co2r').textContent = co2 + ' kg';
+  document.getElementById('b-bags').style.width = Math.min(100, bags / 5.2) + '%';
+  document.getElementById('b-co2r').style.width = Math.min(100, co2 / 0.085) + '%';
+}
+
+function completeR(tab) {
+  if (rDone[tab]) return;
+  rDone[tab] = true;
+  const btn = document.getElementById('btn-' + tab);
+  btn.textContent = '✅ Selesai!'; btn.disabled = true;
+  document.querySelector(`[data-r="${tab}"]`).classList.add('done');
+  EcoState.addXP(25); updateNavXP(); showXPToast(25, tab + ' selesai!');
+  updateProgress();
+}
+
+// ─── Recycle slider ───
+function updateRecycle(val) {
+  document.getElementById('bottle-display').textContent = val;
+  document.getElementById('r-energy').textContent = Math.round(val * 1.0);
+  document.getElementById('r-water').textContent = Math.round(val * 3.0);
+  document.getElementById('r-co2').textContent = (val * 0.03).toFixed(2);
+  EcoState.addXP(1); updateNavXP();
+}
+updateRecycle(10);
+
+// ─── Checklist ───
+const CHECK_ITEMS = [
+  { key:'pilah',    icon:'♻️', label:'Memilah sampah rumah tangga',      xp:15, co2:200, water:2, plastic:10 },
+  { key:'tumbler',  icon:'🍶', label:'Bawa tumbler — hindari plastik',   xp:15, co2:80,  water:1, plastic:20 },
+  { key:'tas',      icon:'👜', label:'Bawa tas belanja sendiri',          xp:15, co2:60,  water:0, plastic:30 },
+  { key:'hemat',    icon:'💡', label:'Matikan lampu & cabut charger',     xp:15, co2:150, water:0, plastic:0  },
+  { key:'kompos',   icon:'🌱', label:'Membuat atau merawat kompos',       xp:15, co2:300, water:0, plastic:0  },
+  { key:'naik',     icon:'🚲', label:'Naik sepeda/jalan kaki/angkot',    xp:15, co2:500, water:0, plastic:0  },
+  { key:'beli',     icon:'🛒', label:'Beli produk ramah lingkungan',      xp:15, co2:100, water:5, plastic:50 },
+  { key:'share',    icon:'📢', label:'Ajak 1 orang peduli lingkungan',   xp:15, co2:0,   water:0, plastic:0  },
+];
+
+function renderChecklist() {
+  const today = new Date().toDateString();
+  document.getElementById('today-date').textContent = new Date().toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long' });
+  const checked = EcoState.getCheckedToday();
+  const grid = document.getElementById('checklist-grid');
+  grid.innerHTML = '';
+  checksDoneToday = checked.length;
+  let totalCO2 = 0, totalWater = 0, totalPlastic = 0;
+
+  CHECK_ITEMS.forEach(item => {
+    const isChecked = checked.includes(item.key);
+    if (isChecked) { totalCO2 += item.co2; totalWater += item.water; totalPlastic += item.plastic; }
+    const div = document.createElement('div');
+    div.className = 'check-item' + (isChecked ? ' checked' : '');
+    div.innerHTML = `
+      <div class="ci-check">${isChecked ? '✓' : ''}</div>
+      <div class="ci-icon">${item.icon}</div>
+      <div class="ci-text">
+        <div class="ci-label">${item.label}</div>
+        <div class="ci-xp">+${item.xp} XP ${isChecked ? '✅' : ''}</div>
+      </div>`;
+    div.onclick = () => toggleCheck(item.key, div, item);
+    grid.appendChild(div);
+  });
+
+  // Update calculators
+  document.getElementById('calc-co2').textContent = totalCO2;
+  document.getElementById('calc-water').textContent = totalWater;
+  document.getElementById('calc-plastic').textContent = totalPlastic;
+  document.getElementById('calc-xp').textContent = dailyXP;
+  updateStreakDots();
+  updateProgress();
+}
+
+function toggleCheck(key, el, item) {
+  const checked = EcoState.getCheckedToday();
+  if (checked.includes(key)) return; // already checked today
+  el.classList.add('checked');
+  el.querySelector('.ci-check').textContent = '✓';
+  el.querySelector('.ci-xp').textContent = '+' + item.xp + ' XP ✅';
+  EcoState.doCheckin(key);
+  EcoState.addXP(item.xp); updateNavXP(); showXPToast(item.xp, item.label + '!');
+  dailyXP += item.xp;
+  checksDoneToday++;
+
+  // Update impact display
+  const allChecked = EcoState.getCheckedToday();
+  let co2 = 0, water = 0, plastic = 0;
+  CHECK_ITEMS.forEach(i => { if (allChecked.includes(i.key)) { co2 += i.co2; water += i.water; plastic += i.plastic; } });
+  animateCounter('calc-co2', co2);
+  animateCounter('calc-water', water);
+  animateCounter('calc-plastic', plastic);
+  animateCounter('calc-xp', dailyXP);
+  updateStreakDots();
+  updateProgress();
+}
+
+function animateCounter(id, target) {
+  const el = document.getElementById(id);
+  const current = parseInt(el.textContent) || 0;
+  const diff = target - current;
+  if (diff <= 0) { el.textContent = target; return; }
+  let step = 0;
+  const interval = setInterval(() => {
+    step++;
+    el.textContent = Math.round(current + diff * step / 15);
+    if (step >= 15) { el.textContent = target; clearInterval(interval); }
+  }, 30);
+}
+
+function updateStreakDots() {
+  const streak = EcoState.getStreak();
+  document.getElementById('streak-num').textContent = streak;
+  const dots = document.getElementById('streak-dots');
+  dots.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'streak-dot' + (i < streak ? ' filled' : '');
+    dots.appendChild(dot);
+  }
+}
+
+// ─── Overall progress ───
+function updateProgress() {
+  const rCount = Object.values(rDone).filter(Boolean).length;
+  const checkCount = Math.min(3, checksDoneToday);
+  const total = 3 + 3; // 3 R + 3 checks
+  const done = rCount + checkCount;
+  const pct = Math.min(100, Math.round(done / total * 100));
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-lbl').textContent = pct + '%';
+  EcoState.setLevelProgress(4, pct);
+
+  const allR = Object.values(rDone).every(Boolean);
+  if ((allR && checksDoneToday >= 3) || DONE) {
+    document.getElementById('btn-done').disabled = false;
+    document.getElementById('hint-txt').textContent = '🎉 Luar biasa! Siap menjadi Eco Hero!';
+  }
+  if (DONE) document.getElementById('btn-next').style.display = 'inline-block';
+}
+
+function doComplete() {
+  EcoState.completeLevel(4); updateNavXP();
+  showNotif('🌍 Level 4 selesai! +100 XP · Eco Hero Badge!');
+  document.getElementById('btn-done').textContent = '✅ Level 4 Selesai!';
+  document.getElementById('btn-done').disabled = true;
+  document.getElementById('btn-next').style.display = 'inline-block';
+  setTimeout(() => {
+    document.getElementById('btn-next').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 500);
+}
+
+// ─── Init ───
+if (DONE) {
+  rDone.reduce = rDone.reuse = rDone.recycle = true;
+  ['reduce', 'reuse', 'recycle'].forEach(r => {
+    const b = document.getElementById('btn-' + r);
+    if (b) { b.textContent = '✅ Selesai!'; b.disabled = true; }
+    document.querySelector(`[data-r="${r}"]`).classList.add('done');
+  });
+  document.getElementById('btn-done').textContent = '✅ Sudah Selesai';
+  document.getElementById('btn-done').disabled = true;
+}
+
+renderChecklist();
+updateProgress();
+updateNavXP();
+</script>
+</body>
+</html>

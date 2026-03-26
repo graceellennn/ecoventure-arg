@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>EcoVenture — Explore. Learn. Be an Eco Hero.</title>
+<meta name="description" content="Platform edukasi lingkungan berbasis gamifikasi. Selesaikan level, kumpulkan XP, dan jadilah Eco Hero!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<script type="module" crossorigin src="/assets/index-Bu__6EXt.js"></script>
+<link rel="stylesheet" crossorigin href="/assets/index-DVGORi05.css">
+<style>
+/* ── Hero ── */
+.hero {
+  min-height: 100vh;
+  background: url('assets/land1.png') center/cover no-repeat;
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  padding: 100px 20px 80px;
+  color: #fff;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Ccircle cx='40' cy='40' r='30' stroke='%23ffffff' stroke-opacity='0.03' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35); /* atur 0.2–0.5 sesuai selera */
+  z-index: 1;
+}
+.hero-text {
+  position: relative;
+  z-index: 2;
+}
+.hero-badge {
+  display: inline-block; background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3); border-radius: 50px;
+  padding: 6px 20px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 20px; backdrop-filter: blur(4px);
+}
+.hero-logo {
+  font-size: clamp(3.5rem, 9vw, 6rem); font-weight: 900;
+  line-height: 1; margin-bottom: 12px; position: relative;
+  text-shadow: 0 4px 24px rgba(0,0,0,.3);
+}
+.hero-logo .eco { color: #A7F3D0; }
+.hero-logo .venture { color: #fff; }
+.hero-tagline {
+  font-size: clamp(1rem, 2.5vw, 1.3rem); font-weight: 600;
+  opacity: .9; margin-bottom: 10px;
+}
+.hero-typewriter {
+  font-size: clamp(.85rem, 2vw, 1rem); opacity: .75;
+  min-height: 1.6em; margin-bottom: 36px; font-family: 'Nunito Sans', sans-serif;
+}
+.cursor {
+  display: inline-block; width: 2px; height: 1em;
+  background: #fff; vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.hero-cta {
+  background: #fff; color: #15803D;
+  padding: 16px 40px; border-radius: 50px;
+  font-weight: 800; font-size: 1rem; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.2);
+  transition: all .25s; position: relative;
+}
+.hero-cta:hover { background: #A7F3D0; transform: translateY(-3px) scale(1.03); box-shadow: 0 14px 40px rgba(0,0,0,.25); }
+.hero-cta .arrow { transition: transform .25s; font-size: 1.2rem; }
+.hero-cta:hover .arrow { transform: translateX(5px); }
+.scroll-hint {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  font-size: 12px; opacity: .6; letter-spacing: 1px;
+  animation: bounce 2s ease-in-out infinite;
+}
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+/* Landscape SVG */
+.hero-landscape {
+  position: absolute; bottom: 0; left: 0; width: 100%; pointer-events: none; z-index: 1;
+}
+.hero-text { position: relative; z-index: 2; }
+.hero-clouds { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.hero-cloud { position: absolute; animation: cloudFloat 8s ease-in-out infinite; }
+.hero-cloud:nth-child(2){animation-delay:-3s;animation-duration:11s}
+.hero-cloud:nth-child(3){animation-delay:-6s;animation-duration:7s}
+@keyframes cloudFloat{0%,100%{transform:translateX(0)}50%{transform:translateX(20px)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* Stats */
+.stats-strip { background: #fff; padding: 50px 40px; }
+.stats-row { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; max-width: 900px; margin: 0 auto; }
+.stat-box {
+  background: linear-gradient(135deg, #F0FDF4, #fff);
+  border: 1.5px solid #BBF7D0; border-radius: 20px;
+  padding: 28px 32px; text-align: center; flex: 1; min-width: 150px;
+  box-shadow: 0 4px 20px rgba(34,197,94,.08);
+  transition: transform .25s, box-shadow .25s;
+}
+.stat-box:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(34,197,94,.15); }
+.stat-box .num { font-size: 2.4rem; font-weight: 900; color: var(--green); line-height: 1; }
+.stat-box .lbl { font-size: 12px; color: #6B7280; font-weight: 600; margin-top: 6px; }
+
+/* Levels grid */
+.levels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px; max-width: 1200px; margin: 0 auto; padding: 0 20px;
+}
+.level-card {
+  background: #fff; border-radius: 20px;
+  padding: 28px; box-shadow: var(--shadow-md);
+  border: 2px solid transparent;
+  transition: transform .3s, box-shadow .3s;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.level-card:hover:not(.locked) { transform: translateY(-6px); box-shadow: var(--shadow-xl); }
+.level-card.active { border-color: var(--green); }
+.level-card.done { border-color: #86EFAC; background: linear-gradient(135deg,#F0FDF4,#fff); }
+.level-card.locked { opacity: .6; filter: grayscale(.4); }
+.card-header { display: flex; align-items: center; gap: 14px; }
+.card-num {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 900; flex-shrink: 0;
+  background: linear-gradient(135deg, #22C55E, #15803D); color: #fff;
+}
+.card-num.done { background: linear-gradient(135deg, #86EFAC, #22C55E); }
+.card-num.locked { background: #E5E7EB; color: #9CA3AF; }
+.card-title { font-size: 1.1rem; font-weight: 800; color: #111827; }
+.card-desc { font-size: .875rem; color: #6B7280; line-height: 1.6; }
+.progress-wrap { display: flex; flex-direction: column; gap: 5px; }
+.progress-bar { height: 8px; background: #E5E7EB; border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #22C55E, #15803D); border-radius: 99px; transition: width .6s; }
+.progress-label { font-size: 11px; color: #6B7280; font-weight: 600; }
+.card-xp {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: #FEF9C3; color: #92400E; border-radius: 99px;
+  padding: 4px 12px; font-size: 12px; font-weight: 700; width: fit-content;
+}
+.card-cta {
+  background: linear-gradient(135deg, #22C55E, #15803D);
+  color: #fff; border-radius: 12px; padding: 12px 20px;
+  font-weight: 700; font-size: .9rem; text-decoration: none;
+  text-align: center; margin-top: auto;
+  transition: opacity .2s, transform .2s;
+}
+.card-cta:hover:not(.locked) { opacity: .9; transform: translateY(-1px); }
+.card-cta.locked { background: #E5E7EB; color: #9CA3AF; cursor: not-allowed; }
+
+/* Problem/Solution table */
+.prob-sol { width:100%; border-collapse:collapse; margin-top:24px; }
+.prob-sol th { background: var(--forest); color:#fff; padding:14px 18px; text-align:left; font-size:13px; font-weight:700; }
+.prob-sol th:first-child { border-radius: 12px 0 0 0; }
+.prob-sol th:last-child { border-radius: 0 12px 0 0; }
+.prob-sol td { padding:14px 18px; border-bottom:1px solid #E5E7EB; font-size:13px; vertical-align:top; }
+.prob-sol tr:last-child td { border-bottom:none; }
+.prob-sol tr:nth-child(even) td { background:#F9FAFB; }
+.prob-sol tr td:first-child { color: #EF4444; }
+
+/* Intro modal */
+#intro-modal {
+  position:fixed; inset:0; z-index:3000;
+  background:rgba(0,0,0,.75); backdrop-filter:blur(8px);
+  display:flex; align-items:center; justify-content:center; padding:20px;
+  opacity:0; pointer-events:none; transition:.4s;
+}
+#intro-modal.open { opacity:1; pointer-events:all; }
+.intro-box {
+  background: linear-gradient(145deg, #0F3D2A, #1A5C3A);
+  color:#fff; border-radius:28px; padding:40px; max-width:540px; width:100%;
+  box-shadow: 0 30px 80px rgba(0,0,0,.5);
+  border: 1px solid rgba(255,255,255,.1);
+  transform: scale(.9) translateY(20px); transition:.4s;
+}
+#intro-modal.open .intro-box { transform: scale(1) translateY(0); }
+.intro-box .story {
+  font-family:'Nunito Sans',sans-serif; font-size:15px; line-height:1.8;
+  color:rgba(255,255,255,.88); margin:20px 0; min-height:80px;
+}
+.intro-progress { display:flex; gap:6px; margin-bottom:20px; }
+.intro-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.3); transition:.3s; }
+.intro-dot.active { background:var(--amber-lt); width:20px; border-radius:4px; }
+.intro-btn {
+  background: var(--green); color:#fff; border-radius:12px;
+  padding:12px 28px; font-weight:700; font-size:14px; border:none; cursor:pointer;
+  transition:.2s; font-family:'Nunito',sans-serif;
+}
+.intro-btn:hover { background:#16A34A; transform:scale(1.03); }
+.intro-btn-skip {
+  background:rgba(255,255,255,.1); color:rgba(255,255,255,.7);
+  border:1px solid rgba(255,255,255,.2);
+}
+
+/* Map path SVG */
+.path-svg { position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events:none; }
+
+/* Section utility */
+.section { padding: 80px 40px; }
+.section-bg-white { background: #fff; }
+.section-bg-light { background: #F9FAFB; }
+.section-title { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 900; text-align: center; margin-bottom: 10px; color: #111827; }
+.section-sub { text-align: center; color: #6B7280; font-size: .95rem; margin-bottom: 40px; }
+.reveal { opacity:0; transform:translateY(30px); transition:.6s ease; }
+.reveal.visible { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<!-- Nav injected by JS -->
+<div id="nav-placeholder"></div>
+<script src="js/state.js"></script>
+<script src="js/nav.js"></script>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero" id="hero">
+  <div class="hero-clouds" aria-hidden="true">
+    <svg class="hero-cloud" style="top:12%;left:5%;width:180px" viewBox="0 0 180 70" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="90" cy="45" rx="80" ry="25" fill="white" opacity=".9"/>
+      <ellipse cx="70" cy="35" rx="45" ry="28" fill="white"/>
+      <ellipse cx="115" cy="38" rx="38" ry="22" fill="white"/>
+    </svg>
+    <svg class="hero-cloud" style="top:18%;right:8%;width:140px" viewBox="0 0 140 55" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="70" cy="38" rx="62" ry="18" fill="white" opacity=".85"/>
+      <ellipse cx="52" cy="28" rx="34" ry="22" fill="white"/>
+      <ellipse cx="92" cy="30" rx="28" ry="18" fill="white"/>
+    </svg>
+    <svg class="hero-cloud" style="top:8%;left:38%;width:120px" viewBox="0 0 120 48" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="60" cy="34" rx="52" ry="16" fill="white" opacity=".75"/>
+      <ellipse cx="45" cy="24" rx="28" ry="19" fill="white"/>
+      <ellipse cx="80" cy="26" rx="24" ry="15" fill="white"/>
+    </svg>
+    <!-- Sun spinning -->
+    <svg style="position:absolute;top:8%;right:12%;width:80px;animation:spin 60s linear infinite" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="45" cy="45" r="26" fill="#FFEE58"/>
+      <circle cx="45" cy="45" r="20" fill="#FFF176"/>
+      <g stroke="#FFEE58" stroke-width="3" stroke-linecap="round">
+        <line x1="45" y1="8"  x2="45" y2="16"/>
+        <line x1="45" y1="74" x2="45" y2="82"/>
+        <line x1="8"  y1="45" x2="16" y2="45"/>
+        <line x1="74" y1="45" x2="82" y2="45"/>
+        <line x1="20" y1="20" x2="26" y2="26"/>
+        <line x1="64" y1="64" x2="70" y2="70"/>
+        <line x1="70" y1="20" x2="64" y2="26"/>
+        <line x1="26" y1="64" x2="20" y2="70"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="hero-text">
+    <div class="hero-badge">🌿 TECHSOFT 2026 — Subtema Lingkungan</div>
+    <h1 class="hero-logo"><span class="eco">Eco</span><span class="venture">Venture</span></h1>
+    <p class="hero-tagline">Explore. Learn. Be an Eco Hero.</p>
+    <p class="hero-typewriter" id="typewriter"><span class="cursor"></span></p>
+    <a href="#" class="hero-cta" id="start-btn">
+      Mulai Petualangan <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <!-- Low-poly landscape -->
+  
+  <div class="scroll-hint">↓ Scroll untuk explore</div>
+</section>
+
+<!-- ══════ STATS ══════ -->
+<div class="stats-strip">
+  <div class="stats-row reveal">
+    <div class="stat-box"><div class="num">4</div><div class="lbl">Level Interaktif</div></div>
+    <div class="stat-box"><div class="num">6+</div><div class="lbl">Mini Games</div></div>
+    <div class="stat-box"><div class="num">500+</div><div class="lbl">XP Tersedia</div></div>
+    <div class="stat-box"><div class="num">🏆</div><div class="lbl">Eco Hero Badge</div></div>
+  </div>
+</div>
+
+<!-- ══════ MAP ══════ -->
+<section id="map-section" style="background:#F0FDF4;padding:60px 0 40px">
+  <div style="text-align:center;padding:0 20px 30px">
+    <h2 class="section-title reveal">🗺️ Peta Petualanganmu</h2>
+    <p class="section-sub reveal">Zoom &amp; geser peta · Klik node level untuk memulai</p>
+  </div>
+
+  <div class="map-container" id="map-wrapper" style="cursor:grab">
+    <div class="map-scene" id="map-scene">
+
+      <svg viewBox="0 0 1100 520" xmlns="http://www.w3.org/2000/svg"
+           style="position:absolute;width:100%;height:100%;top:0;left:0">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#38BDF8"/>
+            <stop offset="100%" stop-color="#7DD3FC"/>
+          </linearGradient>
+        </defs>
+        <rect width="1100" height="520" fill="url(#skyGrad)"/>
+        <!-- Sun -->
+        <circle cx="950" cy="70" r="45" fill="#FFEE58" opacity=".9"/>
+        <circle cx="950" cy="70" r="35" fill="#FFF176"/>
+        <!-- Mountains -->
+        <polygon points="0,400 120,180 240,400"    fill="#0a2a1c" opacity=".8"/>
+        <polygon points="180,400 340,140 500,400"  fill="#14532d" opacity=".7"/>
+        <polygon points="420,400 600,100 760,400"  fill="#0a2a1c" opacity=".9"/>
+        <polygon points="680,400 860,160 1020,400" fill="#14532d" opacity=".7"/>
+        <polygon points="900,400 1060,200 1100,400" fill="#0a2a1c" opacity=".8"/>
+        <!-- Ground -->
+        <polygon points="0,380 200,340 400,360 600,325 800,345 1000,328 1100,340 1100,520 0,520" fill="#166534"/>
+        <polygon points="0,400 250,368 500,380 750,360 1000,372 1100,365 1100,520 0,520" fill="#15803D"/>
+        <polygon points="0,430 300,415 600,420 900,408 1100,416 1100,520 0,520" fill="#22C55E"/>
+        <!-- Trees -->
+        <g fill="#052e16">
+          <polygon points="80,380  90,350  100,380"/><polygon points="75,388  90,368 105,388" fill="#14532d"/>
+          <polygon points="160,375 172,342 184,375"/><polygon points="155,384 172,360 189,384" fill="#14532d"/>
+          <polygon points="430,362 443,330 456,362"/><polygon points="425,370 443,348 461,370" fill="#14532d"/>
+          <polygon points="560,355 573,322 586,355"/><polygon points="555,364 573,340 591,364" fill="#14532d"/>
+          <polygon points="720,358 733,325 746,358"/><polygon points="715,367 733,343 751,367" fill="#14532d"/>
+          <polygon points="1010,342 1023,308 1036,342"/><polygon points="1005,351 1023,327 1041,351" fill="#14532d"/>
+        </g>
+        <!-- Clouds -->
+        <g opacity=".85">
+          <ellipse cx="140" cy="100" rx="70" ry="22" fill="white"/>
+          <ellipse cx="110" cy="88"  rx="42" ry="26" fill="white"/>
+          <ellipse cx="168" cy="92"  rx="36" ry="20" fill="white"/>
+        </g>
+        <g opacity=".8">
+          <ellipse cx="600" cy="80" rx="60" ry="18" fill="white"/>
+          <ellipse cx="574" cy="68" rx="36" ry="22" fill="white"/>
+          <ellipse cx="628" cy="70" rx="30" ry="16" fill="white"/>
+        </g>
+        <!-- Islands -->
+        <ellipse cx="175" cy="440" rx="68" ry="22" fill="#166534"/>
+        <ellipse cx="175" cy="435" rx="62" ry="18" fill="#22C55E"/>
+        <ellipse cx="350" cy="380" rx="60" ry="20" fill="#166534"/>
+        <ellipse cx="350" cy="375" rx="54" ry="16" fill="#22C55E"/>
+        <ellipse cx="490" cy="220" rx="65" ry="20" fill="#166534"/>
+        <ellipse cx="490" cy="215" rx="58" ry="16" fill="#22C55E"/>
+        <ellipse cx="700" cy="230" rx="60" ry="19" fill="#166534"/>
+        <ellipse cx="700" cy="225" rx="54" ry="15" fill="#22C55E"/>
+        <ellipse cx="860" cy="340" rx="62" ry="20" fill="#166534"/>
+        <ellipse cx="860" cy="335" rx="56" ry="16" fill="#22C55E"/>
+        <!-- Summit -->
+        <polygon points="550,100 600,65 650,100 630,115 570,115" fill="#0a2a1c"/>
+        <polygon points="560,100 600,70 640,100 625,112 575,112" fill="#14532d"/>
+        <!-- Paths -->
+        <polyline points="190,420 380,290 550,175 720,290 910,420"
+          fill="none" stroke="rgba(255,255,255,.6)" stroke-width="4"
+          stroke-dasharray="10,7" stroke-linecap="round"/>
+        <polyline points="550,175 600,82"
+          fill="none" stroke="rgba(255,238,88,.85)" stroke-width="4"
+          stroke-dasharray="10,7" stroke-linecap="round"/>
+      </svg>
+
+      <!-- Level Nodes -->
+      <div class="level-node" data-level="1" style="left:17.3%;top:84.6%">
+        <button class="node-btn">1</button>
+        <span class="node-label">Waste Basics</span>
+      </div>
+      <div class="level-node" data-level="2" style="left:34.5%;top:57%">
+        <button class="node-btn">2</button>
+        <span class="node-label">Jenis Sampah</span>
+      </div>
+      <div class="level-node" data-level="3" style="left:65.5%;top:57%">
+        <button class="node-btn">3</button>
+        <span class="node-label">Waste Sorting</span>
+      </div>
+      <div class="level-node" data-level="4" style="left:82.7%;top:84.6%">
+        <button class="node-btn">4</button>
+        <span class="node-label">3R &amp; Action</span>
+      </div>
+      <div class="level-node" data-level="hero" style="left:54.5%;top:13%">
+        <button class="node-btn" style="background:linear-gradient(135deg,#FFD700,#FF8C00);width:60px;height:60px;font-size:1.5rem">🏆</button>
+        <span class="node-label" style="background:rgba(120,60,0,.85)">Eco Hero</span>
+      </div>
+    </div>
+    <div class="map-hint">🖱 Scroll=Zoom · Drag=Pan</div>
+    <button id="map-reset-zoom"
+      style="position:absolute;top:12px;left:12px;z-index:50;background:rgba(0,0,0,.45);
+             color:#fff;border:none;border-radius:8px;padding:6px 12px;
+             font-family:'Nunito',sans-serif;font-size:12px;cursor:pointer">↺ Reset</button>
+  </div>
+</section>
+
+
+<!-- ══════ LEVELS GRID ══════ -->
+<section id="levels-section" class="section section-bg-white">
+  <h2 class="section-title reveal">📚 Level-Level EcoVenture</h2>
+  <p class="section-sub reveal">Selesaikan setiap level untuk membuka level berikutnya</p>
+  <div class="levels-grid reveal" id="levels-grid"></div>
+</section>
+
+<!-- ══════ WHY ══════ -->
+<section class="section section-bg-light reveal">
+  <h2 class="section-title">💡 Masalah &amp; Solusi</h2>
+  <p class="section-sub">EcoVenture hadir untuk menjawab tantangan nyata</p>
+  <div style="overflow-x:auto;max-width:900px;margin:0 auto">
+    <table class="prob-sol">
+      <thead>
+        <tr><th>❌ Masalah</th><th>✅ Solusi di EcoVenture</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Banyak orang tidak paham cara memilah sampah</td><td>🎮 Level 3: drag &amp; drop mini game pemilahan sampah</td></tr>
+        <tr><td>Edukasi lingkungan membosankan &amp; terlalu teoritis</td><td>⚡ Gamifikasi: XP, badge, level, progress bar</td></tr>
+        <tr><td>Tahu tapi tidak melakukan aksi nyata</td><td>✅ Level 4: Real Life Action — checklist harian &amp; streak</td></tr>
+        <tr><td>Konten tidak terstruktur &amp; tidak menarik</td><td>🗺️ Interactive map — alur progresif Level 1 → 4 → Eco Hero</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════ INTRO MODAL ══════ -->
+<div id="intro-modal">
+  <div class="intro-box">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div style="font-size:2.5rem" id="intro-icon">🌍</div>
+      <div>
+        <h3 style="font-size:1.2rem;font-weight:800;margin:0">Intro Story</h3>
+        <p style="font-size:12px;color:rgba(255,255,255,.6);margin:0">Awal perjalananmu</p>
+      </div>
+    </div>
+    <div class="intro-progress" id="intro-dots"></div>
+    <p class="story" id="intro-text"></p>
+    <div style="display:flex;gap:12px;justify-content:flex-end">
+      <button class="intro-btn intro-btn-skip" id="intro-skip">Lewati</button>
+      <button class="intro-btn" id="intro-next">Lanjut →</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">🌿 <span>Eco</span>Venture</div>
+  <p>Kompetisi TECHSOFT 2026 · HIMA-RPL Politeknik Negeri Indramayu</p>
+  <p style="margin-top:8px;opacity:.7">Explore. Learn. Be an Eco Hero.</p>
+</footer>
+
+<script src="js/map.js"></script>
+<script>
+  // ── Typewriter ──
+  const phrases = [
+    'Platform Edukasi Lingkungan Interaktif',
+    'Gamified · Seru · Bermakna',
+  'Jadi Eco Explorer — Raih Eco Hero!',
+];
+let pi=0,ci=0,deleting=false;
+const tw=document.getElementById('typewriter');
+function typewrite(){
+  const cur=phrases[pi];
+  if(!deleting){
+    tw.innerHTML=cur.slice(0,++ci)+'<span class="cursor"></span>';
+    if(ci===cur.length){deleting=true;setTimeout(typewrite,1800);return;}
+  } else {
+    tw.innerHTML=cur.slice(0,--ci)+'<span class="cursor"></span>';
+    if(ci===0){deleting=false;pi=(pi+1)%phrases.length;}
+  }
+  setTimeout(typewrite,deleting?40:80);
+}
+typewrite();
+
+// ── Levels grid ──
+const levelData=[
+  {id:1,icon:'🌱',name:'Waste Basics',url:'level1.html',desc:'Apa itu sampah & dampak lingkungannya. Klik objek & lihat sebelum/sesudah.',xp:50},
+  {id:2,icon:'🔬',name:'Jenis Sampah',url:'level2.html',desc:'3 bagian: Organik → Plastik & Kaca → B3 & E-Waste. Deep-dive tiap jenis.',xp:75},
+  {id:3,icon:'♻️',name:'Waste Sorting',url:'level3.html',desc:'Mini game drag & drop — pisahkan sampah ke tempat yang benar!',xp:75},
+  {id:4,icon:'🌍',name:'3R & Real Action',url:'level4.html',desc:'Reduce, Reuse, Recycle + checklist harian & habit tracker.',xp:100},
+];
+const grid=document.getElementById('levels-grid');
+levelData.forEach(lv=>{
+  const state=EcoState.getLevelState(lv.id);
+  const prog=EcoState.getLevelProgress(lv.id);
+  grid.innerHTML+=`
+  <div class="level-card ${state}">
+    <div class="card-header">
+      <div class="card-num ${state}">${state==='done'?'✓':lv.icon}</div>
+      <div class="card-title">${lv.name}</div>
+      </div>
+      <p class="card-desc">${lv.desc}</p>
+      ${state!=='locked'?`<div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div>
+        <span class="progress-label">${prog}% selesai</span>
+        </div>`:'<span style="font-size:12px;color:#aaa">🔒 Selesaikan level sebelumnya</span>'}
+        <div class="card-xp">⚡ +${lv.xp} XP</div>
+    <a href="${lv.url}" class="card-cta ${state==='locked'?'locked':''}"
+       ${state==='locked'?'onclick="return false;"':''}>
+       ${state==='done'?'🔄 Ulang Level':'▶ Mulai Level'} ${lv.id}
+       </a>
+  </div>`;
+});
+
+// ── Intro story ──
+const stories=[
+  {icon:'🌍',text:'Bumi kita sedang dalam bahaya. Setiap hari, jutaan ton sampah dibuang sembarangan — mencemari udara, air, dan tanah.'},
+  {icon:'♻️',text:'Tapi perubahan dimulai dari diri sendiri. Kamu dipilih menjadi Eco Explorer — penjelajah yang akan mempelajari cara melindungi bumi.'},
+  {icon:'🗺️',text:'Ikuti peta petualangan ini. Selesaikan setiap level, kumpulkan XP dan badge, hingga akhirnya kamu menjadi... Eco Hero! 🏆'},
+];
+let si=0;
+const introModal=document.getElementById('intro-modal');
+const introText=document.getElementById('intro-text');
+const introIcon=document.getElementById('intro-icon');
+const introDots=document.getElementById('intro-dots');
+const introNext=document.getElementById('intro-next');
+function renderStory(){
+  introText.textContent=stories[si].text;
+  introIcon.textContent=stories[si].icon;
+  introDots.innerHTML=stories.map((_,i)=>`<div class="intro-dot ${i===si?'active':''}"></div>`).join('');
+  introNext.textContent=si<stories.length-1?'Lanjut →':'Ayo Mulai! 🚀';
+}
+document.getElementById('start-btn').addEventListener('click',e=>{
+  e.preventDefault(); si=0; renderStory(); introModal.classList.add('open');
+});
+introNext.addEventListener('click',()=>{
+  if(si<stories.length-1){si++;renderStory();}
+  else{
+    introModal.classList.remove('open');
+    document.getElementById('map-section').scrollIntoView({behavior:'smooth'});
+    showNotif('🌿 Selamat datang, Eco Explorer!');
+    showXPToast(5,'Intro selesai');
+    EcoState.addXP(5); updateNavXP();
+  }
+});
+document.getElementById('intro-skip').addEventListener('click',()=>introModal.classList.remove('open'));
+introModal.addEventListener('click',e=>{if(e.target===introModal)introModal.classList.remove('open');});
+
+// ── Scroll reveal ──
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+updateNavXP();
+</script>
+<script type="module" src="/assets/index-Bu__6EXt.js"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>About — EcoVenture</title>
+<style>
+/* HERO */
+.hero-card {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+  border-radius: 20px;
+  margin: 40px auto;
+  max-width: 900px;
+}
+
+.hero-card h1 {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+}
+
+.hero-card p {
+  opacity: 0.9;
+  max-width: 600px;
+  margin: auto;
+}
+
+/* GRID */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+  gap: 24px;
+}
+
+/* CARD */
+.eco-card {
+  background: white;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  transition: .3s;
+}
+
+.eco-card:hover {
+  transform: translateY(-6px);
+}
+
+.card-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+/* TEAM CARD */
+.team-card-modern {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  transition: .3s;
+}
+
+.team-card-modern:hover {
+  transform: translateY(-6px);
+}
+
+.avatar {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+/* CTA */
+.cta-card {
+  text-align: center;
+  margin: 60px 0;
+}
+
+.cta-card p {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<script src="js/state.js"></script>
+<script src="js/nav.js"></script>
+<main>
+
+  <!-- HERO -->
+  <section class="hero-card">
+    <h1>Tentang EcoVenture</h1>
+    <p>
+      Platform edukasi lingkungan berbasis gamifikasi yang membantu kamu belajar
+      pengelolaan sampah dengan cara yang seru, interaktif, dan bermakna.
+    </p>
+  </section>
+
+  <!-- INFO CARDS -->
+  <section class="section">
+    <div class="card-grid">
+
+      <div class="eco-card">
+        <div class="card-icon">🎯</div>
+        <h3>Latar Belakang</h3>
+        <p>
+          Permasalahan sampah di Indonesia terus meningkat. Kurangnya edukasi
+          membuat banyak orang belum memahami cara pengelolaan yang benar.
+        </p>
+      </div>
+
+      <div class="eco-card">
+        <div class="card-icon">💡</div>
+        <h3>Tujuan</h3>
+        <p>
+          Mengubah edukasi lingkungan menjadi pengalaman yang menyenangkan
+          melalui sistem game, level, dan interaksi visual.
+        </p>
+      </div>
+
+      <div class="eco-card">
+        <div class="card-icon">👥</div>
+        <h3>Target</h3>
+        <p>
+          Pelajar dan masyarakat umum yang ingin belajar gaya hidup ramah
+          lingkungan dengan cara yang lebih engaging.
+        </p>
+      </div>
+
+      <div class="eco-card">
+        <div class="card-icon">⚙️</div>
+        <h3>Teknologi</h3>
+        <p>
+          Dibangun menggunakan HTML, CSS, dan JavaScript dengan sistem ringan
+          berbasis localStorage tanpa backend.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-card">
+    <p>"Explore. Learn. Be an Eco Hero." 🌿</p>
+    <a href="index.html" class="btn-primary">← Kembali ke Home</a>
+  </section>
+
+</main>
+<footer>
+  <div class="footer-logo">🌿 <span>Eco</span>Venture</div>
+  <p>Kompetisi TECHSOFT 2026 · HIMA-RPL Politeknik Negeri Indramayu</p>
+</footer>
+<script src="js/state.js"></script>
+<script>updateNavXP()</script>
+</body>
+</html>

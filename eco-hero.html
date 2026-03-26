@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eco Hero 🏆 | EcoVenture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<style>
+body {
+  background: linear-gradient(160deg, #0F3D2A 0%, #15803D 40%, #22C55E 100%);
+  min-height: 100vh; font-family: 'Nunito', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── Confetti canvas ── */
+#confetti-canvas {
+  position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+}
+
+/* ── Hero section ── */
+.hero-section {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 120px 20px 60px; position: relative;
+}
+
+/* Stars twinkling background */
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.star {
+  position: absolute; width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(255,255,255,.85);
+  animation: twinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+}
+@keyframes twinkle { 0%,100%{opacity:.2;transform:scale(.8)} 50%{opacity:1;transform:scale(1.3)} }
+
+/* Badge trophy */
+.trophy-wrap {
+  position: relative; margin-bottom: 32px; z-index: 2;
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+.trophy-glow {
+  width: 180px; height: 180px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,238,88,.35) 0%, transparent 70%);
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+@keyframes pulse-glow { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6} 50%{transform:translate(-50%,-50%) scale(1.3);opacity:1} }
+.trophy-circle {
+  width: 140px; height: 140px; border-radius: 50%;
+  background: linear-gradient(135deg, #FFD700, #FF8C00);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 5rem; position: relative; z-index: 2;
+  box-shadow: 0 0 0 8px rgba(255,215,0,.3), 0 0 0 16px rgba(255,215,0,.15), 0 20px 60px rgba(255,140,0,.5);
+}
+
+/* Title */
+.hero-pretitle {
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(255,255,255,.7); margin-bottom: 10px; z-index: 2; position: relative;
+}
+.hero-main-title {
+  font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; color: #fff;
+  line-height: 1.1; margin-bottom: 16px; z-index: 2; position: relative;
+  text-shadow: 0 4px 24px rgba(0,0,0,.3);
+}
+.hero-main-title .gold { color: #FFD700; }
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.2rem); color: rgba(255,255,255,.85);
+  font-weight: 600; max-width: 500px; line-height: 1.6;
+  z-index: 2; position: relative; margin-bottom: 40px;
+}
+
+/* XP counter */
+.xp-display {
+  background: rgba(255,255,255,.15); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.25); border-radius: 20px;
+  padding: 20px 40px; display: inline-flex; align-items: center; gap: 16px;
+  z-index: 2; position: relative; margin-bottom: 40px;
+}
+.xp-icon { font-size: 2.5rem; }
+.xp-info { text-align: left; }
+.xp-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.7); }
+.xp-value { font-size: 2.8rem; font-weight: 900; color: #FFD700; line-height: 1; }
+
+/* Action buttons */
+.action-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; z-index: 2; position: relative; }
+.btn-primary {
+  background: #fff; color: #15803D;
+  padding: 14px 32px; border-radius: 50px; font-weight: 800; font-size: 1rem;
+  text-decoration: none; border: none; cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  transition: all .25s;
+}
+.btn-primary:hover { background: #FEF9C3; transform: translateY(-3px) scale(1.03); }
+.btn-secondary {
+  background: rgba(255,255,255,.15); color: #fff;
+  border: 2px solid rgba(255,255,255,.4);
+  padding: 14px 32px; border-radius: 50px; font-weight: 700; font-size: 1rem;
+  text-decoration: none; cursor: pointer;
+  transition: all .25s;
+}
+.btn-secondary:hover { background: rgba(255,255,255,.25); transform: translateY(-2px); }
+
+/* ── Content sections ── */
+.content-section {
+  background: #F0FDF4; padding: 70px 20px;
+}
+.content-inner { max-width: 1000px; margin: 0 auto; }
+
+.section-heading {
+  text-align: center; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 900;
+  color: #111827; margin-bottom: 8px;
+}
+.section-sub { text-align: center; color: #6B7280; margin-bottom: 40px; font-size: .95rem; }
+
+/* Progress summary cards */
+.progress-summary {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px; margin-bottom: 40px;
+}
+.prog-card {
+  background: #fff; border-radius: 20px; padding: 24px; text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,.06); border: 2px solid #BBF7D0;
+  transition: transform .25s;
+}
+.prog-card:hover { transform: translateY(-4px); }
+.prog-card .icon { font-size: 2.8rem; margin-bottom: 12px; }
+.prog-card .title { font-size: .95rem; font-weight: 800; color: #111827; margin-bottom: 6px; }
+.prog-card .status {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #DCFCE7; color: #15803D;
+  border-radius: 99px; padding: 4px 14px; font-size: 12px; font-weight: 700;
+}
+.prog-card .status.locked { background: #F3F4F6; color: #9CA3AF; }
+.prog-card .xp-gained { font-size: 13px; color: #6B7280; margin-top: 8px; font-weight: 600; }
+
+/* Badge wall */
+.badge-grid {
+  display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;
+  margin-bottom: 40px;
+}
+.badge-item {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background: #fff; border-radius: 20px; padding: 20px 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.06);
+  border: 2px solid transparent; min-width: 120px;
+  transition: transform .25s, border-color .25s;
+}
+.badge-item:hover { transform: translateY(-4px); border-color: #FCD34D; }
+.badge-item .b-icon { font-size: 2.5rem; }
+.badge-item .b-name { font-size: 12px; font-weight: 700; color: #374151; text-align: center; }
+.badge-item.earned { border-color: #FCD34D; background: linear-gradient(135deg, #FFFBEB, #fff); }
+.badge-item.locked-badge { opacity: .4; filter: grayscale(1); }
+
+/* Impact stats */
+.impact-row {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+.impact-box {
+  background: linear-gradient(135deg, #0F3D2A, #15803D);
+  border-radius: 20px; padding: 28px; text-align: center; color: #fff;
+}
+.impact-box .imp-num { font-size: 2.2rem; font-weight: 900; color: #A7F3D0; }
+.impact-box .imp-lbl { font-size: 12px; color: rgba(255,255,255,.75); font-weight: 600; margin-top: 4px; }
+.impact-box .imp-icon { font-size: 1.8rem; margin-bottom: 10px; }
+
+/* Message card */
+.message-card {
+  background: linear-gradient(135deg, #0F3D2A 0%, #1D4ED8 100%);
+  border-radius: 28px; padding: 50px 40px; text-align: center; color: #fff;
+  margin-top: 40px; position: relative; overflow: hidden;
+}
+.message-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Ccircle cx='30' cy='30' r='20' stroke='%23ffffff' stroke-opacity='0.04' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E");
+}
+.message-card .quote {
+  font-size: clamp(1.2rem, 3vw, 1.7rem); font-weight: 800; line-height: 1.5;
+  margin-bottom: 16px; position: relative;
+}
+.message-card .quote-sub {
+  font-size: .95rem; color: rgba(255,255,255,.75); position: relative;
+}
+
+/* ── Certificate download area ── */
+.cert-section {
+  background: #fff; padding: 60px 20px; text-align: center;
+}
+.cert-box {
+  max-width: 600px; margin: 0 auto;
+  border: 4px dashed #BBF7D0; border-radius: 24px; padding: 40px;
+  background: linear-gradient(135deg, #F0FDF4, #fff);
+}
+.cert-trophy { font-size: 4rem; margin-bottom: 16px; }
+.cert-title { font-size: 1.5rem; font-weight: 900; color: #111827; margin-bottom: 8px; }
+.cert-name { font-size: 1.2rem; color: #15803D; font-weight: 700; margin-bottom: 4px; }
+.cert-desc { font-size: .9rem; color: #6B7280; margin-bottom: 24px; }
+.cert-seal {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  font-size: 12px; color: #6B7280; font-weight: 600;
+}
+
+/* Reveal animation */
+.reveal { opacity:0; transform:translateY(30px); transition:.6s ease; }
+.reveal.visible { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="stars" id="stars-bg"></div>
+
+<!-- Nav -->
+<div id="nav-placeholder"></div>
+<script src="js/state.js"></script>
+<script src="js/nav.js"></script>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero-section">
+  <div class="trophy-wrap">
+    <div class="trophy-glow"></div>
+    <div class="trophy-circle">🏆</div>
+  </div>
+  <p class="hero-pretitle">Selamat! Kamu telah menyelesaikan semua level</p>
+  <h1 class="hero-main-title">You are now an<br><span class="gold">Eco Hero!</span></h1>
+  <p class="hero-subtitle">Kamu telah membuktikan bahwa pengetahuan dan aksi nyata bisa mengubah dunia. Bumi berterima kasih padamu! 🌏</p>
+
+  <div class="xp-display">
+    <div class="xp-icon">⚡</div>
+    <div class="xp-info">
+      <div class="xp-label">Total XP Kamu</div>
+      <div class="xp-value" id="total-xp">0</div>
+    </div>
+  </div>
+
+  <div class="action-btns">
+    <a href="index.html" class="btn-primary">🗺️ Kembali ke Peta</a>
+    <button class="btn-secondary" id="confetti-btn">🎉 Rayakan Lagi!</button>
+  </div>
+</section>
+
+<!-- ══════ PROGRESS SUMMARY ══════ -->
+<section class="content-section">
+  <div class="content-inner">
+    <h2 class="section-heading reveal">📊 Perjalananmu</h2>
+    <p class="section-sub reveal">Semua yang sudah kamu pelajari dan capai</p>
+
+    <div class="progress-summary reveal" id="progress-summary">
+      <!-- injected by JS -->
+    </div>
+
+    <!-- Impact stats -->
+    <h2 class="section-heading reveal" style="margin-top:50px">🌿 Dampak Nyata Pemahamanmu</h2>
+    <p class="section-sub reveal">Dengan pengetahuan ini, kamu bisa membuat perbedaan</p>
+    <div class="impact-row reveal">
+      <div class="impact-box">
+        <div class="imp-icon">🌊</div>
+        <div class="imp-num">500+</div>
+        <div class="imp-lbl">Gram plastik bisa kamu cegah per bulan</div>
+      </div>
+      <div class="impact-box">
+        <div class="imp-icon">🌱</div>
+        <div class="imp-num">12 kg</div>
+        <div class="imp-lbl">CO₂ bisa dikurangi dengan 3R setiap tahun</div>
+      </div>
+      <div class="impact-box">
+        <div class="imp-icon">💧</div>
+        <div class="imp-num">2.000 L</div>
+        <div class="imp-lbl">Air bisa dihemat dengan daur ulang kertas</div>
+      </div>
+      <div class="impact-box">
+        <div class="imp-icon">🐠</div>
+        <div class="imp-num">100+</div>
+        <div class="imp-lbl">Hewan laut terlindungi dari sampah plastik</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ BADGES ══════ -->
+<section style="background:#fff;padding:70px 20px">
+  <div class="content-inner">
+    <h2 class="section-heading reveal">🎖️ Badge Koleksi</h2>
+    <p class="section-sub reveal">Setiap badge mewakili pencapaian nyata</p>
+    <div class="badge-grid reveal" id="badge-grid">
+      <!-- injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ══════ PESAN ══════ -->
+<section class="content-section">
+  <div class="content-inner">
+    <div class="message-card reveal">
+      <div class="quote">
+        "Kamu tidak harus luar biasa untuk memulai,<br>
+        tapi kamu harus mulai untuk menjadi luar biasa."
+      </div>
+      <div class="quote-sub">
+        Setiap langkah kecilmu — memilah sampah, membawa tumbler, mengurangi plastik —<br>
+        adalah kontribusi nyata untuk bumi yang lebih baik. 🌍
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CERTIFICATE ══════ -->
+<section class="cert-section">
+  <div class="cert-box reveal" id="cert-box">
+    <div class="cert-trophy">🏆</div>
+    <div class="cert-title">Sertifikat Eco Hero</div>
+    <div class="cert-name" id="cert-name">EcoVenture Explorer</div>
+    <div class="cert-desc">
+      Telah berhasil menyelesaikan semua level EcoVenture<br>
+      dan membuktikan komitmen terhadap lingkungan hidup
+    </div>
+    <div style="font-size:1.5rem;margin:16px 0">⭐⭐⭐⭐⭐</div>
+    <div class="cert-seal">
+      🌿 EcoVenture &nbsp;·&nbsp; TECHSOFT 2026 &nbsp;·&nbsp; HIMA-RPL Politeknik Negeri Indramayu
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">🌿 <span>Eco</span>Venture</div>
+  <p>Kompetisi TECHSOFT 2026 · HIMA-RPL Politeknik Negeri Indramayu</p>
+  <p style="margin-top:8px;opacity:.7">Explore. Learn. Be an Eco Hero.</p>
+</footer>
+
+<script>
+// ── Stars ──
+(function(){
+  const wrap=document.getElementById('stars-bg');
+  for(let i=0;i<60;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;
+      --dur:${2+Math.random()*4}s;--delay:${-Math.random()*4}s;
+      width:${2+Math.random()*4}px;height:${2+Math.random()*4}px;`;
+    wrap.appendChild(s);
+  }
+})();
+
+// ── XP counter animation ──
+const totalXPEl=document.getElementById('total-xp');
+const targetXP=EcoState.getXP()||0;
+let current=0;
+function animateXP(){
+  if(current<targetXP){
+    current=Math.min(current+Math.ceil((targetXP-current)/20)+1,targetXP);
+    totalXPEl.textContent=current;
+    requestAnimationFrame(animateXP);
+  }
+}
+setTimeout(animateXP,500);
+updateNavXP();
+
+// ── Progress summary ──
+const levels=[
+  {id:1,icon:'🌱',name:'Waste Basics',xp:50},
+  {id:2,icon:'🔬',name:'Jenis Sampah',xp:75},
+  {id:3,icon:'♻️',name:'Waste Sorting',xp:75},
+  {id:4,icon:'🌍',name:'3R & Action',xp:100},
+];
+const pGrid=document.getElementById('progress-summary');
+levels.forEach(lv=>{
+  const state=EcoState.getLevelState(lv.id);
+  const done=state==='done';
+  pGrid.innerHTML+=`
+  <div class="prog-card">
+    <div class="icon">${lv.icon}</div>
+    <div class="title">Level ${lv.id}: ${lv.name}</div>
+    <div class="status ${done?'':'locked'}">${done?'✅ Selesai':'🔒 Belum'}</div>
+    ${done?`<div class="xp-gained">+${lv.xp} XP diperoleh</div>`:''}
+  </div>`;
+});
+
+// ── Badges ──
+const allBadges=[
+  {id:'eco_starter',   icon:'🌱', name:'Eco Starter',   desc:'Mulai petualangan'},
+  {id:'waste_aware',   icon:'👁️', name:'Waste Aware',   desc:'Selesai Level 1'},
+  {id:'waste_expert',  icon:'🔬', name:'Waste Expert',  desc:'Selesai Level 2'},
+  {id:'sorter_pro',    icon:'♻️', name:'Sorter Pro',    desc:'Selesai Level 3'},
+  {id:'eco_warrior',   icon:'⚔️', name:'Eco Warrior',   desc:'Selesai Level 4'},
+  {id:'eco_hero',      icon:'🏆', name:'Eco Hero',      desc:'Semua level selesai'},
+  {id:'daily_hero',    icon:'📅', name:'Daily Hero',    desc:'3 hari streak'},
+  {id:'xp_master',     icon:'⚡', name:'XP Master',     desc:'Kumpulkan 300 XP'},
+];
+const earned=EcoState.getBadges()||[];
+const bGrid=document.getElementById('badge-grid');
+allBadges.forEach(b=>{
+  const has=earned.includes(b.id)||
+    (b.id==='eco_hero'&&[1,2,3,4].every(id=>EcoState.getLevelState(id)==='done'))||
+    (b.id==='xp_master'&&EcoState.getXP()>=300);
+  bGrid.innerHTML+=`
+  <div class="badge-item ${has?'earned':'locked-badge'}">
+    <div class="b-icon">${b.icon}</div>
+    <div class="b-name">${b.name}</div>
+    <div style="font-size:10px;color:#9CA3AF;margin-top:2px">${b.desc}</div>
+  </div>`;
+});
+
+// ── Confetti ──
+const canvas=document.getElementById('confetti-canvas');
+const ctx=canvas.getContext('2d');
+let particles=[], animId=null;
+const colors=['#22C55E','#FFD700','#38BDF8','#F59E0B','#EF4444','#A7F3D0','#FCD34D','#fff'];
+
+function resizeCanvas(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+
+function Particle(){
+  this.x=Math.random()*canvas.width;
+  this.y=Math.random()*canvas.height*.4-20;
+  this.r=Math.random()*6+3;
+  this.color=colors[Math.floor(Math.random()*colors.length)];
+  this.vx=(Math.random()-.5)*4;
+  this.vy=Math.random()*3+1;
+  this.va=(Math.random()-.5)*.1;
+  this.angle=Math.random()*Math.PI*2;
+  this.shape=Math.random()<.5?'rect':'circle';
+  this.life=1;
+}
+Particle.prototype.update=function(){
+  this.x+=this.vx; this.y+=this.vy;
+  this.angle+=this.va;
+  this.vy+=.04;
+  if(this.y>canvas.height+20)this.life=0;
+};
+Particle.prototype.draw=function(){
+  ctx.save();
+  ctx.globalAlpha=this.life*.9;
+  ctx.translate(this.x,this.y);
+  ctx.rotate(this.angle);
+  ctx.fillStyle=this.color;
+  if(this.shape==='rect'){
+    ctx.fillRect(-this.r,-this.r/2,this.r*2,this.r);
+  } else {
+    ctx.beginPath();
+    ctx.arc(0,0,this.r,0,Math.PI*2);
+    ctx.fill();
+  }
+  ctx.restore();
+};
+
+function launchConfetti(count=200){
+  for(let i=0;i<count;i++) particles.push(new Particle());
+}
+
+function animateConfetti(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles=particles.filter(p=>p.life>0);
+  particles.forEach(p=>{ p.update(); p.draw(); });
+  if(particles.length>0) animId=requestAnimationFrame(animateConfetti);
+  else { cancelAnimationFrame(animId); ctx.clearRect(0,0,canvas.width,canvas.height); }
+}
+
+function startConfetti(){
+  launchConfetti(250);
+  if(animId) cancelAnimationFrame(animId);
+  animateConfetti();
+}
+
+// Auto-launch on load
+setTimeout(startConfetti,400);
+// Waves
+setTimeout(()=>launchConfetti(150),1200);
+setTimeout(()=>launchConfetti(100),2400);
+
+document.getElementById('confetti-btn').addEventListener('click',startConfetti);
+
+// ── Scroll reveal ──
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting)e.target.classList.add('visible');
+}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+
+// ── Check if truly hero ──
+const allDone=[1,2,3,4].every(id=>EcoState.getLevelState(id)==='done');
+if(allDone){
+  // Add eco_hero badge if not already there
+  if(!earned.includes('eco_hero')){
+    EcoState.addBadge&&EcoState.addBadge('eco_hero');
+  }
+  showXPToast(50,'🏆 Eco Hero!');
+  EcoState.addXP(50);
+  updateNavXP();
+}
+</script>
+</body>
+</html>
